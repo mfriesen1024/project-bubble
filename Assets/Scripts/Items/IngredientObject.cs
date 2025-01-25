@@ -1,18 +1,18 @@
 using UnityEngine;
 
-public enum IngredientEffect
-{
-    BREAKWALL,
-    DAMAGE,
-    CRATER,// ie destroy every dropingobject
-    HEAL,
-    SPARKLE,
-    MELTLOCK,
-    NOTHING
-}
-
 public class IngredientObject : DragableObject
 {
+    public enum IngredientEffect
+    {
+        BREAKWALL,
+        DAMAGE,
+        CRATER,// ie destroy every dropingobject
+        HEAL,
+        SPARKLE,
+        MELTLOCK,
+        NOTHING
+    }
+
     public IngredientEffect effect = IngredientEffect.NOTHING;
     public int effectValue; // amount of damage or health
 
