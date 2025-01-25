@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DropingObject : MonoBehaviour, IDropHandler
+public abstract class DropingObject : MonoBehaviour, IDropHandler
 {
-    public bool activating; //used for brewing and potion usage
+    //ABSTRACT OBJECT DRAGABLES ARE DROPPED ON eg: WALLS, ENEMIES, PLAYER
+
+    protected bool activating; //used for brewing and potion usage
     public void OnDrop(PointerEventData eventData)
     {
         GameObject droppedObject = eventData.pointerDrag;
@@ -15,11 +17,11 @@ public class DropingObject : MonoBehaviour, IDropHandler
         }
     }
 
-    public void Activate(DragableObject obj)
+    public virtual void ActWith(DragableObject obj)
     {
         if (activating)
         { 
-            obj.Activate();
+            obj.Activate(this);
         }
     }
 }

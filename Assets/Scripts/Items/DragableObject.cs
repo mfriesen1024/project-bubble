@@ -2,10 +2,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DragableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public abstract class DragableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [HideInInspector] public Transform parentAfterDrag;
     public Image image;
+
+    void Start()
+    {
+        image = GetComponent<Image>();
+    }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -26,7 +31,7 @@ public class DragableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         image.raycastTarget = true;
     }
 
-    public virtual void Activate()
+    public virtual void Activate(DropingObject obj)
     {
         Destroy(gameObject);
     }
