@@ -78,13 +78,13 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OutlineThickness: 0.01
-    - _OutlineWidth: 0.0146
+    - _OutlineWidth: 0.0058
     - _Parallax: 0.02
     - _Radius: 0.5
     - _RimIntensity: 0.5
-    - _RimPower: 2
+    - _RimPower: 0.71
     - _SmoothnessTextureChannel: 0
-    - _Specular: 0.5
+    - _Specular: 0.822
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
