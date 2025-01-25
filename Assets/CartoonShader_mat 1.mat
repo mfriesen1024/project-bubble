@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CartoonShader_mat 1
-  m_Shader: {fileID: 4800000, guid: 897bac22a33067f4b9024fe0d891adc5, type: 3}
+  m_Shader: {fileID: 10755, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -59,6 +59,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Ramp:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BumpScale: 1
@@ -76,7 +80,9 @@ Material:
     - _OutlineThickness: 0.001
     - _OutlineWidth: 0.0327
     - _Parallax: 0.02
+    - _RimPower: 2
     - _SmoothnessTextureChannel: 0
+    - _Specular: 0.5
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
@@ -85,5 +91,6 @@ Material:
     - _Color: {r: 0.4263959, g: 1, b: 0, a: 1}
     - _EmissionColor: {r: 0.43870467, g: 0.4528302, b: 0.42933428, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ShadowColor: {r: 0.5, g: 0.5, b: 0.7, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

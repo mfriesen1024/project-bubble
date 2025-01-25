@@ -1,4 +1,4 @@
-Shader "Custom/KennyStyleCartoon"
+Shader "Custom/KennyStyleCartoon_URP"
 {
     Properties
     {
@@ -14,141 +14,132 @@ Shader "Custom/KennyStyleCartoon"
 
     SubShader
     {
-        Tags { "RenderType"="Opaque" "LightMode"="ForwardBase" }
+        Tags { "RenderType"="Opaque" "Queue"="Geometry" "RenderPipeline"="UniversalPipeline" }
         LOD 200
 
-        // Outline Pass
         Pass
         {
+            Name "Outline"
+            Tags { "LightMode"="Always" }
             Cull Front
             ZWrite On
             
-            CGPROGRAM
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            
-            #include "UnityCG.cginc"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
-            struct appdata
+            struct Attributes
             {
-                float4 vertex : POSITION;
-                float3 normal : NORMAL;
+                float4 positionOS : POSITION;
+                float3 normalOS : NORMAL;
             };
 
-            struct v2f
+            struct Varyings
             {
-                float4 pos : SV_POSITION;
+                float4 positionCS : SV_POSITION;
             };
 
             float _OutlineWidth;
             float4 _OutlineColor;
 
-            v2f vert (appdata v)
+            Varyings vert (Attributes v)
             {
-                v2f o;
-                float3 normal = normalize(mul((float3x3)UNITY_MATRIX_IT_MV, v.normal));
-                float2 offset = TransformViewToProjection(normal.xy);
-                o.pos = UnityObjectToClipPos(v.vertex);
-                o.pos.xy += offset * _OutlineWidth;
+                Varyings o;
+                float3 normalWS = TransformObjectToWorldNormal(v.normalOS);
+                float3 offset = normalWS * _OutlineWidth;
+                float4 positionWS = TransformObjectToWorld(v.positionOS);
+                o.positionCS = TransformWorldToHClip(positionWS + float4(offset, 0.0));
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            half4 frag (Varyings i) : SV_Target
             {
                 return _OutlineColor;
             }
-            ENDCG
+            ENDHLSL
         }
 
-        // Base Color Pass
         Pass
         {
+            Name "MainPass"
+            Tags { "LightMode"="UniversalForward" }
+            Blend Alpha, OneMinusSrcAlpha
             Cull Back
             ZWrite On
-            
-            CGPROGRAM
+
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma multi_compile_fwdbase
-            
-            #include "UnityCG.cginc"
-            #include "Lighting.cginc"
-            #include "AutoLight.cginc"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
-            struct appdata
+            struct Attributes
             {
-                float4 vertex : POSITION;
-                float3 normal : NORMAL;
+                float4 positionOS : POSITION;
+                float3 normalOS : NORMAL;
                 float2 uv : TEXCOORD0;
             };
 
-            struct v2f
+            struct Varyings
             {
-                float4 pos : SV_POSITION;
+                float4 positionCS : SV_POSITION;
                 float2 uv : TEXCOORD0;
-                float3 worldNormal : TEXCOORD1;
-                float3 worldPos : TEXCOORD2;
-                float3 viewDir : TEXCOORD3;
-                SHADOW_COORDS(4)
+                float3 normalWS : TEXCOORD1;
+                float3 viewDirWS : TEXCOORD2;
+                float3 worldPosWS : TEXCOORD3;
+                LIGHT_COORDS(4)
             };
 
             sampler2D _MainTex;
-            float4 _MainTex_ST;
-            sampler2D _Ramp;
             float4 _Color;
+            sampler2D _Ramp;
             float4 _ShadowColor;
             float _Specular;
             float _RimPower;
-            float4 _OutlineColor;
 
-            v2f vert (appdata v)
+            Varyings vert (Attributes v)
             {
-                v2f o;
-                o.pos = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                o.worldNormal = UnityObjectToWorldNormal(v.normal);
-                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
-                o.viewDir = WorldSpaceViewDir(v.vertex);
-                TRANSFER_SHADOW(o);
+                Varyings o;
+                o.positionCS = TransformObjectToHClip(v.positionOS);
+                o.uv = v.uv;
+                o.normalWS = TransformObjectToWorldNormal(v.normalOS);
+                o.viewDirWS = GetCameraPositionWS() - TransformObjectToWorld(v.positionOS);
+                o.worldPosWS = TransformObjectToWorld(v.positionOS);
+                TRANSFER_VERTEX_TO_FRAGMENT(o);
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            half4 frag (Varyings i) : SV_Target
             {
-                // Basic vectors
-                float3 normal = normalize(i.worldNormal);
-                float3 lightDir = normalize(_WorldSpaceLightPos0.xyz);
-                float3 viewDir = normalize(i.viewDir);
-                
-                float NdotL = dot(normal, lightDir);
-                float2 rampUV = float2(NdotL * 0.5 + 0.5, 0.5);
-                float4 ramp = tex2D(_Ramp, rampUV);
-                
-                float shadow = SHADOW_ATTENUATION(i);
-                
-                // Soft shadow blending
-                float3 shadowColor = lerp(_ShadowColor.rgb, float3(1,1,1), shadow);
-                
-                float3 halfVector = normalize(lightDir + viewDir);
-                float specular = pow(max(dot(normal, halfVector), 0), _Specular * 128);
-                specular = step(0.9, specular);
-                
-                // Rim lighting
-                float rim = 1 - saturate(dot(normal, viewDir));
-                rim = pow(rim, _RimPower);
-                
-                float4 texColor = tex2D(_MainTex, i.uv) * _Color;
-                float3 finalColor = texColor.rgb * ramp.rgb * shadowColor;
-                finalColor += specular * _LightColor0.rgb;
-                finalColor += rim * _ShadowColor.a * _ShadowColor.rgb;
-                
-                return float4(finalColor, texColor.a);
-            }
-            ENDCG
-        }
+                float3 normal = normalize(i.normalWS);
+                float3 viewDir = normalize(i.viewDirWS);
 
-        // Shadow pass
-        UsePass "Legacy Shaders/VertexLit/SHADOWCASTER"
+                // Ramp shading
+                float NdotL = saturate(dot(normal, normalize(GetMainLightDirection(i.worldPosWS))));
+                float rampUV = NdotL * 0.5 + 0.5;
+                float3 ramp = SAMPLE_TEXTURE2D(_Ramp, sampler_MainTex, float2(rampUV, 0.5)).rgb;
+
+                // Shadow attenuation
+                float shadowAtten = GetMainLightShadowAttenuation(i);
+                float3 shadowColor = lerp(_ShadowColor.rgb, float3(1, 1, 1), shadowAtten);
+
+                // Specular highlight
+                float3 halfDir = normalize(normalize(GetMainLightDirection(i.worldPosWS)) + viewDir);
+                float specular = pow(saturate(dot(normal, halfDir)), _Specular * 128.0);
+
+                // Rim lighting
+                float rim = pow(1.0 - saturate(dot(normal, viewDir)), _RimPower);
+
+                // Final color
+                float3 albedo = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv).rgb * _Color.rgb;
+                float3 color = albedo * ramp * shadowColor;
+                color += specular * GetMainLightColor().rgb;
+                color += rim * _ShadowColor.a * _ShadowColor.rgb;
+
+                return float4(color, _Color.a);
+            }
+            ENDHLSL
+        }
     }
-    FallBack "Diffuse"
+    FallBack "Universal Render Pipeline/Lit"
 }
