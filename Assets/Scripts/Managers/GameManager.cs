@@ -10,15 +10,18 @@ namespace Assets.Scripts.Managers
     internal class GameManager:MonoBehaviour
     {
         public static GameManager instance { get; private set; }
-        public UIManager UIManager { get; private set; }
+        [SerializeField] UIManager uiManager;
+        public UIManager UIManager { get => uiManager; private set => uiManager = value; }
 
         private void Start()
         {
             if(instance == null) { instance = this; }
             else { Destroy(gameObject); }
 
+            /*
             // Get uiman and be angry if it doesnt exist.
             UIManager = GetComponentInChildren<UIManager>();
+            */
             if (UIManager == null) { Debug.LogError("LF UIMan! Help!"); }
             else { UIManager.Ready(); }
         }
