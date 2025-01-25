@@ -10,7 +10,7 @@ namespace Assets.Scripts.Managers
 
         UIState state;
         public Action<UIState> StateChanged = delegate { };
-        private Canvas[] UIElements;
+        [SerializeField] Canvas[] UIElements;
 
 
         /// <summary>
