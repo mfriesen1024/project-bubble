@@ -1,12 +1,13 @@
 using UnityEngine;
 
-public class IngredientObject : MonoBehaviour
+public class IngredientObject : DragableObject
 {
-    public void AddToBrew()
+    public override void Activate()
     {
         //add this object to brewing station list
-        //for now delete
-        Destroy(gameObject);
+        
+        //then remove from play?
+        base.Activate();
     }
 
     public virtual void CreateEffect()

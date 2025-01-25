@@ -19,7 +19,6 @@ public class DropingObject : MonoBehaviour, IDropHandler
     {
         if (activating)
         { 
-            Debug.Log("Dropper");
             obj.Activate();
         }
     }
