@@ -29,6 +29,7 @@ namespace Assets.Scripts.Managers
                 // hide all ui elements, then activate by number.
                 Hideall();
                 GameObject uiElement = UIElements[(int)value].gameObject;
+                uiElement.SetActive(true);
             }
         }
 
