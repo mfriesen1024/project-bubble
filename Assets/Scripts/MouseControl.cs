@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class MouseControl : MonoBehaviour
 {
     [SerializeField] private Camera camera;
-    public GameObject pointer;
     public DragableObject heldObject;
 
     private void Update()
@@ -18,13 +17,11 @@ public class MouseControl : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit raycastHit))
             {
-                pointer.transform.position = raycastHit.point;
-                
                 if (raycastHit.transform.gameObject.TryGetComponent<DropingObject>(out DropingObject drop)) 
                 {
                     if (Input.GetMouseButtonUp(0) && heldObject != null)
                     { 
-                        drop.Activate(heldObject);
+                        drop.ActWith(heldObject);
                     }
                 }
             }
