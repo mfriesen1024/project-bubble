@@ -1,30 +1,44 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 10f; // Speed
+    private bool isMoving;
+    private Vector3 origPos, targetPos;
+    private float timeToMove = 0.2f;
 
-    private Rigidbody rb; 
-
-    void Start()
+    void Update()
     {
-       
-        rb = GetComponent<Rigidbody>();
+        if (Input.GetKey(KeyCode.W) && !isMoving)
+            StartCoroutine(MovePlayer(Vector3.forward));
 
-        if (rb == null)
-        {
-            Debug.LogError("Rigidbody not found!");
-        }
+        if (Input.GetKey(KeyCode.A) && !isMoving)
+            StartCoroutine(MovePlayer(Vector3.left));
+
+        if (Input.GetKey(KeyCode.S) && !isMoving)
+            StartCoroutine(MovePlayer(Vector3.back));
+
+        if (Input.GetKey(KeyCode.D) && !isMoving)
+            StartCoroutine(MovePlayer(Vector3.right));
     }
 
-    void FixedUpdate()
+    private IEnumerator MovePlayer(Vector3 direction)
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        isMoving = true;
 
-       
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        float elapsedTime = 0;
 
-        rb.AddForce(movement * speed);
+        origPos = transform.position;
+        targetPos = origPos + direction;
+
+        while (elapsedTime < timeToMove)
+        {
+            transform.position = Vector3.Lerp(origPos, targetPos, (elapsedTime / timeToMove));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = targetPos;
+
+        isMoving = false;
     }
 }
