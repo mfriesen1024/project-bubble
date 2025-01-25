@@ -53,11 +53,12 @@ namespace Assets.Scripts.Managers.Helpers
             }
         }
 
-
-
         private void InitInstructions()
         {
-            throw new NotImplementedException();
+            Button[] buttons = instructions.GetComponentsInChildren<Button>();
+            buttons[0].onClick.AddListener(OnAccept);
+
+            void OnAccept() { uiman.State = UIState.hud; }
         }
 
         private void InitHud()
