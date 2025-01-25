@@ -1,15 +1,17 @@
-﻿using System;
+﻿using Assets.Scripts.Managers.Helpers;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Managers
 {
     public class UIManager : MonoBehaviour
     {
-        public UIState State { get => state; set { ExecuteStateChange(value); state = value; } }
-
-
-        UIState state;
         public Action<UIState> StateChanged = delegate { };
+        public UIState State { get => state; set { ExecuteStateChange(value); state = value; } }
+        UIState state;
+
+        UIHelper uIHelper;
+
         [SerializeField] Canvas[] UIElements;
 
 
@@ -18,7 +20,9 @@ namespace Assets.Scripts.Managers
         /// </summary>
         internal void Ready()
         {
+            uIHelper = new UIHelper(this);
 
+            State = UIState.menu;
         }
 
         // An internal updater.
