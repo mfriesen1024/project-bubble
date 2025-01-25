@@ -1,0 +1,53 @@
+﻿using Assets.Scripts.Managers.Helpers;
+using System;
+using UnityEngine;
+
+namespace Assets.Scripts.Managers
+{
+    public class UIManager : MonoBehaviour
+    {
+        public Action<UIState> StateChanged = delegate { };
+        public UIState State { get => state; set { ExecuteStateChange(value); state = value; } }
+        UIState state;
+
+        UIHelper uIHelper;
+
+        [SerializeField] Canvas[] UIElements;
+
+
+        /// <summary>
+        /// Called on startup, godot naming.
+        /// </summary>
+        internal void Ready()
+        {
+            uIHelper = new UIHelper(this);
+
+            State = UIState.menu;
+        }
+
+        // An internal updater.
+        private void ExecuteStateChange(UIState value)
+        {
+            if (state != value)
+            {
+                // hide all ui elements, then activate by number.
+                Hideall();
+                GameObject uiElement = UIElements[(int)value].gameObject;
+                uiElement.SetActive(true);
+            }
+        }
+
+        private void Hideall()
+        {
+            foreach (var element in UIElements) { element.gameObject.SetActive(false); }
+        }
+    }
+
+    public enum UIState
+    {
+        menu,
+        instructions,
+        hud,
+        pause
+    }
+}
