@@ -39,17 +39,17 @@ namespace Assets.Scripts.Managers.Helpers
 
             void OnPlayClicked()
             {
-                throw new NotImplementedException();
+                uiman.State = UIState.instructions;
             }
 
             void OnCreditsClicked()
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("We dont have credits yet, so shut it.");
             }
 
             void OnQuitClicked()
             {
-                throw new NotImplementedException();
+                Application.Quit();
             }
         }
 
