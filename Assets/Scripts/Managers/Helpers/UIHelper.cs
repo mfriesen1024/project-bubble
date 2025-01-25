@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +8,7 @@ namespace Assets.Scripts.Managers.Helpers
     {
         // Store refs here.
         UIManager uiman;
-        Canvas mainMenu,instructions,hud,pause;
+        Canvas mainMenu, instructions, hud, pause;
 
         public UIHelper(UIManager uIManager)
         {
@@ -34,10 +30,30 @@ namespace Assets.Scripts.Managers.Helpers
             pause = elements[3];
         }
 
-        private void InitMainMenu()
+        void InitMainMenu()
         {
-            Button[] blerg = help;
+            Button[] buttons = mainMenu.GetComponentsInChildren<Button>();
+            buttons[0].onClick.AddListener(OnPlayClicked);
+            buttons[1].onClick.AddListener(OnCreditsClicked);
+            buttons[2].onClick.AddListener(OnQuitClicked);
+
+            void OnPlayClicked()
+            {
+                throw new NotImplementedException();
+            }
+
+            void OnCreditsClicked()
+            {
+                throw new NotImplementedException();
+            }
+
+            void OnQuitClicked()
+            {
+                throw new NotImplementedException();
+            }
         }
+
+
 
         private void InitInstructions()
         {
