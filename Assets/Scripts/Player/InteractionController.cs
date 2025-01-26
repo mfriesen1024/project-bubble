@@ -27,6 +27,7 @@ namespace Assets.Scripts.Player
             if(other.TryGetComponent(out Ingredient bubbledIngredient))
             {
                 heldIngredient = bubbledIngredient.type;
+                Debug.Log($"Got ingredient {heldIngredient}");
             }
             if(other.TryGetComponent(out Beaker beaker))
             {
@@ -34,12 +35,14 @@ namespace Assets.Scripts.Player
                 {
                     heldPotion = (PotionType)(IngredientType)heldIngredient;
                     heldIngredient = null;
+                    Debug.Log($"Made potion {heldPotion}");
                 }
             }
             if(other.TryGetComponent(out Door door))
             {
                 if(heldPotion == door.RequiredPotion)
                 {
+                    Debug.Log($"Telling {door.name} to do things.");
                     door.DoThings();
                 }
             }
