@@ -24,11 +24,11 @@ namespace Assets.Scripts.Player
 
         private void OnTriggerEnter(Collider other)
         {
-            if(TryGetComponent(out Ingredient bubbledIngredient))
+            if(other.TryGetComponent(out Ingredient bubbledIngredient))
             {
                 heldIngredient = bubbledIngredient.type;
             }
-            if(TryGetComponent(out Beaker beaker))
+            if(other.TryGetComponent(out Beaker beaker))
             {
                 if(heldIngredient != null)
                 {
@@ -36,7 +36,7 @@ namespace Assets.Scripts.Player
                     heldIngredient = null;
                 }
             }
-            if(TryGetComponent(out Door door))
+            if(other.TryGetComponent(out Door door))
             {
                 if(heldPotion == door.RequiredPotion)
                 {
