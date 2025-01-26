@@ -1576,9 +1576,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4182603743174131954, guid: 3a381b70fb7434377a6f8a5d0728c120, type: 3}
       insertIndex: -1
       addedObject: {fileID: 695499818}
-    - targetCorrespondingSourceObject: {fileID: 4182603743174131954, guid: 3a381b70fb7434377a6f8a5d0728c120, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 695499821}
   m_SourcePrefab: {fileID: 100100000, guid: 3a381b70fb7434377a6f8a5d0728c120, type: 3}
 --- !u!1 &678877534
 GameObject:
@@ -1950,37 +1947,6 @@ MonoBehaviour:
   playerHeightOffset: 0.5
   spawnAreas:
   - {x: 0, y: 4}
---- !u!114 &695499821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 695499814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bf2980365f32df4ab080c8ce599dab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bubblePrefab: {fileID: 5129565299501188435, guid: 5680335eaa88848439307b4ad0d05313, type: 3}
-  bubbleSpawnInterval: 4
-  bubbleScale: {x: 20, y: 20, z: 20}
-  bubbleFallSpeed: 2
-  bubbleDamage: 25
-  bubbleHeightOffset: 15
-  scaleIncreasePerSecond: 0.1
-  spawnSounds:
-  - {fileID: 8300000, guid: f1019d451c9d4504391add0e2143e311, type: 3}
-  - {fileID: 8300000, guid: a1279b01297c61c47939a8c1229f136d, type: 3}
-  - {fileID: 8300000, guid: fb3e6e4b8ed485644a4d12d5c3aaf867, type: 3}
-  spawnSoundVolume: 1
-  destroySounds:
-  - {fileID: 8300000, guid: f1019d451c9d4504391add0e2143e311, type: 3}
-  - {fileID: 8300000, guid: a1279b01297c61c47939a8c1229f136d, type: 3}
-  - {fileID: 8300000, guid: fb3e6e4b8ed485644a4d12d5c3aaf867, type: 3}
-  destroySoundVolume: 1
-  player: {fileID: 2024835121865707314, guid: 2d4a45298996f3842bcc5d16c0ab59ee, type: 3}
-  playerHealth: 100
 --- !u!1 &721410028
 GameObject:
   m_ObjectHideFlags: 0
@@ -4208,8 +4174,6 @@ MonoBehaviour:
   pauseMenuPanel: {fileID: 1295639430}
   backgroundMusic: {fileID: 2037757993}
   gameOverMusic: {fileID: 1823270927}
-  playerAnimator: {fileID: -7422354334251619945, guid: 2d4a45298996f3842bcc5d16c0ab59ee, type: 3}
-  playerObject: {fileID: 2024835121865707314, guid: 2d4a45298996f3842bcc5d16c0ab59ee, type: 3}
 --- !u!1 &1972794779
 GameObject:
   m_ObjectHideFlags: 0
