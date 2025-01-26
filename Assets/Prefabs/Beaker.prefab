@@ -120,6 +120,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f060159f45d2d54c8bbb35fb47fc2d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  childName: Potion
+  colorForPotionZero: {r: 1, g: 0.8757578, b: 0, a: 1}
+  colorForPotionOne: {r: 0, g: 0.8249502, b: 1, a: 1}
+  colorForPotionTwo: {r: 1, g: 0.39718735, b: 0, a: 1}
 --- !u!65 &7914920347841307497
 BoxCollider:
   m_ObjectHideFlags: 0
