@@ -1,5 +1,7 @@
 using UnityEngine;
 
+
+/*
 public class IngredientObject : DragableObject
 {
     public enum IngredientEffect
@@ -54,3 +56,4 @@ public class IngredientObject : DragableObject
         Activate(obj);
     }
 }
+*/

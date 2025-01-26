@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/*
 public abstract class DropingObject : MonoBehaviour, IDropHandler
 {
     //ABSTRACT OBJECT DRAGABLES ARE DROPPED ON eg: WALLS, ENEMIES, PLAYER
@@ -25,3 +26,4 @@ public abstract class DropingObject : MonoBehaviour, IDropHandler
         }
     }
 }
+*/
