@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     private float raycastDistance = 0.25f; // Raycast distance adjustable in Inspector
 
     [SerializeField]
+    private string wallTag = "Wall"; // Tag for wall objects adjustable in Inspector
+
+    [SerializeField]
     private AudioClip[] walkSounds; // Array of walking sounds
     private AudioSource audioSource;
 
@@ -79,8 +82,11 @@ public class PlayerController : MonoBehaviour
         // Perform raycast
         if (Physics.Raycast(ray, out hit, raycastDistance))
         {
-            Debug.Log("Blocked by: " + hit.collider.name);
-            return false; // Blocked by an object within raycastDistance
+            if (hit.collider.CompareTag(wallTag))
+            {
+                Debug.Log("Blocked by wall: " + hit.collider.name);
+                return false; // Blocked by an object with the specified wall tag
+            }
         }
 
         return true; // No obstacles, movement allowed
