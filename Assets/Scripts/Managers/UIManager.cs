@@ -8,7 +8,7 @@ namespace Assets.Scripts.Managers
     {
         public Action<UIState> StateChanged = delegate { };
         public UIState State { get => state; set { ExecuteStateChange(value); state = value; } }
-        UIState state;
+        UIState state = (UIState)(-1);
 
         UIHelper uIHelper;
 
