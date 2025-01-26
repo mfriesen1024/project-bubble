@@ -68,7 +68,7 @@ namespace Assets.Scripts.Managers.Helpers
 
         private void InitPause()
         {
-            Button[] buttons = instructions.GetComponentsInChildren<Button>();
+            Button[] buttons = pause.GetComponentsInChildren<Button>();
             buttons[0].onClick.AddListener(OnResume);
             buttons[1].onClick.AddListener(OnReturnToMenu);
 
