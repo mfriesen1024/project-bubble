@@ -31,8 +31,17 @@ public class BerryAndBeakerSpawner : MonoBehaviour
 
     private void SpawnBerriesInAreas()
     {
-        foreach (BerryArea berryArea in berryAreas)
+        if (berryPrefabs.Count != berryAreas.Count)
         {
+            Debug.LogError("Mismatch between number of berry prefabs and berry areas! Ensure each area has one specific berry prefab.");
+            return;
+        }
+
+        for (int i = 0; i < berryAreas.Count; i++)
+        {
+            BerryArea berryArea = berryAreas[i];
+            GameObject berryPrefab = berryPrefabs[i];
+
             // Collect all valid tile positions within the area
             List<Vector2Int> availablePositions = GetAvailablePositionsInTileList(berryArea);
 
@@ -51,16 +60,13 @@ public class BerryAndBeakerSpawner : MonoBehaviour
                 spawnPosition.y * gridManager.tileSize
             );
 
-            // Select a random berry prefab
-            GameObject randomBerryPrefab = berryPrefabs[Random.Range(0, berryPrefabs.Count)];
-
             // Instantiate the berry
-            GameObject spawnedBerry = Instantiate(randomBerryPrefab, berryPosition, Quaternion.identity, gridManager.transform);
+            GameObject spawnedBerry = Instantiate(berryPrefab, berryPosition, Quaternion.identity, gridManager.transform);
 
             // Fix the scale of the spawned berry
             spawnedBerry.transform.localScale = berryScale;
 
-            Debug.Log($"Berry spawned in area {berryArea.name} at position {spawnPosition}");
+            Debug.Log($"Berry of type {berryPrefab.name} spawned in area {berryArea.name} at position {spawnPosition}");
         }
     }
 
