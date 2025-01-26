@@ -70,6 +70,11 @@ public class Timer : MonoBehaviour
     public void BackToMenu()
     {
         IsGameOver = false; // Reset the global flag
+
+       // Stop the current audio source
+        if (backgroundMusic != null)
+            backgroundMusic.Stop();
+
         SceneManager.LoadScene("MainMenu"); // Replace "MainMenu" with the actual menu scene name
     }
 

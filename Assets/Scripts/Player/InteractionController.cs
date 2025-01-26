@@ -89,10 +89,11 @@ namespace Assets.Scripts.Player
 
             if (other.TryGetComponent(out Door door))
             {
+                // Check if the held potion matches the required potion for the door
                 if (heldPotion == door.RequiredPotion)
                 {
-                    Debug.Log($"Telling {door.name} to do things.");
-                    door.DoThings();
+                    Debug.Log($"Destroying {door.name} as it matches potion {heldPotion}");
+                    Destroy(door.gameObject);
 
                     // Reset held potion and update animation
                     heldPotion = null;
