@@ -7,8 +7,8 @@ namespace Assets.Scripts.Player
     public class InteractionController : MonoBehaviour
     {
         public Action OnInteract;
-        public IngredientType? heldIngredient;
-        public PotionType? heldPotion;
+        public IngredientType? heldIngredient = null;
+        public PotionType? heldPotion = null;
 
         // Use this for initialization
         void Start()
@@ -33,6 +33,7 @@ namespace Assets.Scripts.Player
                 if(heldIngredient != null)
                 {
                     heldPotion = (PotionType)(IngredientType)heldIngredient;
+                    heldIngredient = null;
                 }
             }
             if(TryGetComponent(out Door door))
