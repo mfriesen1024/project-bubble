@@ -12,10 +12,12 @@ namespace Assets.Scripts.Items
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out InteractionController ic))
+            if (other.TryGetComponent(out InteractionController ignored))
             {
+                Debug.Log($"Trying to pop bubble of ingredient {name}.");
                 bubble.SetActive(false);
             }
+            else { Debug.Log($"Btw, no IC found."); }
         }
     }
 
