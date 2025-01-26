@@ -8,7 +8,7 @@ public class GridManager : MonoBehaviour
     public int gridWidth = 10;     // Grid width
     public int gridHeight = 10;    // Grid height
     public float tileSize = 1f;    // Size of each tile
-    public float wallSize = 1.5f; // Size of each tile
+    public float wallSize = 1.5f;  // Size of each wall
 
     // Define specific tiles as walls (hardcoded or dynamically loaded)
     public List<Vector2Int> wallPositions = new List<Vector2Int>
@@ -38,6 +38,28 @@ public class GridManager : MonoBehaviour
 
                 // Check if this tile is a wall
                 bool isWall = wallPositions.Contains(new Vector2Int(x, z));
+
+                if (isWall)
+                {
+                    // Correct the wall position to perfectly align with the grid
+                    Vector3 wallPosition = new Vector3(
+                        x * tileSize,
+                        wallPrefab.GetComponent<Renderer>().bounds.size.y / 2, // Ensure the wall sits on the floor
+                        z * tileSize
+                    );
+
+                    GameObject wall = Instantiate(wallPrefab, wallPosition, Quaternion.identity, transform);
+
+                    // Adjust wall scale to match tile size without gaps
+                    wall.transform.localScale = new Vector3(tileSize, wall.transform.localScale.y, tileSize);
+
+                    // Snap wall to grid by rounding its position to avoid minor offsets
+                    wall.transform.position = new Vector3(
+                        Mathf.Round(wall.transform.position.x / tileSize) * tileSize,
+                        wall.transform.position.y,
+                        Mathf.Round(wall.transform.position.z / tileSize) * tileSize
+                    );
+                }
 
                 // Initialize the tile
                 Tile tileScript = tile.GetComponent<Tile>();
