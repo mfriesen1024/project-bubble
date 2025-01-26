@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Assets.Scripts.Player;
+using System;
 using UnityEngine;
 
-namespace Assets.Scripts.Player
+namespace Assets.Scripts.Items
 {
-    internal class Ingredient:MonoBehaviour
+    internal class Ingredient : MonoBehaviour
     {
         public Action Pop = delegate { };
         [SerializeField] internal IngredientType type;

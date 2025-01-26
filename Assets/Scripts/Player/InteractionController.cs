@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Managers;
+﻿using Assets.Scripts.Items;
+using Assets.Scripts.Managers;
+using Assets.Scripts.Misc;
 using System;
 using System.Collections;
 using UnityEngine;
