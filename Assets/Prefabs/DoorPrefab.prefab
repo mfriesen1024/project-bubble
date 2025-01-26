@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RequiredPotion: 0
-  collider: {fileID: 2015685993844763159}
+  wallCollider: {fileID: 2015685993844763159}
 --- !u!65 &6326181635061766462
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -63,7 +63,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
