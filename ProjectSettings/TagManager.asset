@@ -8,6 +8,7 @@ TagManager:
   - Floor
   - BubbleShield
   - Beaker
+  - Bubble
   layers:
   - Default
   - TransparentFX
