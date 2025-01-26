@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Managers
 {
-    internal class GameManager:MonoBehaviour
+    internal class GameManager : MonoBehaviour
     {
         public static GameManager instance { get; private set; }
         [SerializeField] UIManager uiManager;
@@ -15,7 +10,7 @@ namespace Assets.Scripts.Managers
 
         private void Start()
         {
-            if(instance == null) { instance = this; }
+            if (instance == null) { instance = this; }
             else { Destroy(gameObject); }
 
             /*
@@ -28,7 +23,7 @@ namespace Assets.Scripts.Managers
             Debug.Log("GM Initialized!");
 
             // Once we're done initialization, tell the UIMan to load the game.
-            UIManager.State=UIState.menu;
+            UIManager.State = UIState.menu;
         }
 
         // No idea what to do here, idk if we need anything here yet.
