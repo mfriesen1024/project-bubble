@@ -8,7 +8,7 @@ namespace Assets.Scripts.Managers
     {
         public Action<UIState> StateChanged = delegate { };
         public UIState State { get => state; set { ExecuteStateChange(value); state = value; } }
-        UIState state;
+        UIState state = (UIState)(-1);
 
         UIHelper uIHelper;
 
@@ -21,6 +21,8 @@ namespace Assets.Scripts.Managers
         internal void Ready()
         {
             uIHelper = new UIHelper(this);
+
+            Debug.Log("UIMan Initialized!");
 
             State = UIState.menu;
         }
@@ -39,7 +41,16 @@ namespace Assets.Scripts.Managers
 
         private void Hideall()
         {
-            foreach (var element in UIElements) { element.gameObject.SetActive(false); }
+            foreach (var element in UIElements)
+            {
+                element.gameObject.SetActive(false);
+            }
+        }
+
+        private void Update()
+        {
+            // Is this the wrong spot for a pause input check? well too bad.
+            if (State == UIState.hud && Input.GetKey(KeyCode.Escape)) { State = UIState.pause; }
         }
     }
 
@@ -48,6 +59,7 @@ namespace Assets.Scripts.Managers
         menu,
         instructions,
         hud,
-        pause
+        pause,
+        endLevel
     }
 }

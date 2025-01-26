@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.Player
+namespace Assets.Scripts.Items
 {
-    internal class Beaker:MonoBehaviour
+    internal class Beaker : MonoBehaviour
     {
     }
 
     public enum PotionType
     {
-        Zero, 
+        Zero,
         One,
         Two
     }

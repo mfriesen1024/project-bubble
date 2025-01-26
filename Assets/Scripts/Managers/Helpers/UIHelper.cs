@@ -8,7 +8,7 @@ namespace Assets.Scripts.Managers.Helpers
     {
         // Store refs here.
         UIManager uiman;
-        Canvas mainMenu, instructions, hud, pause;
+        Canvas mainMenu, instructions, hud, pause, endLevel;
 
         public UIHelper(UIManager uIManager)
         {
@@ -19,6 +19,7 @@ namespace Assets.Scripts.Managers.Helpers
             InitInstructions();
             InitHud();
             InitPause();
+            InitEndLevel();
         }
 
         private void InitUIElements()
@@ -28,6 +29,7 @@ namespace Assets.Scripts.Managers.Helpers
             instructions = elements[1];
             hud = elements[2];
             pause = elements[3];
+            endLevel = elements[4];
         }
 
         void InitMainMenu()
@@ -63,12 +65,25 @@ namespace Assets.Scripts.Managers.Helpers
 
         private void InitHud()
         {
-            throw new NotImplementedException();
+            Debug.LogException(new NotImplementedException("We don't have anything to put in the hud yet."));
         }
 
         private void InitPause()
         {
-            throw new NotImplementedException();
+            Button[] buttons = pause.GetComponentsInChildren<Button>();
+            buttons[0].onClick.AddListener(OnResume);
+            buttons[1].onClick.AddListener(OnReturnToMenu);
+
+            void OnResume() { uiman.State = UIState.hud; }
+            void OnReturnToMenu() { uiman.State = UIState.menu; }
+        }
+
+        private void InitEndLevel()
+        {
+            Button[] buttons = endLevel.GetComponentsInChildren<Button>();
+            buttons[0].onClick.AddListener(OnAccept);
+
+            void OnAccept() { uiman.State = UIState.menu; }
         }
     }
 }

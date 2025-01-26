@@ -1,5 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using Assets.Scripts.Items;
+using Assets.Scripts.Managers;
+using Assets.Scripts.Misc;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Player
@@ -21,12 +23,12 @@ namespace Assets.Scripts.Player
         // Update is called once per frame
         void FixedUpdate()
         {
-            
+
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if(other.TryGetComponent(out Ingredient ingredient))
+            if (other.TryGetComponent(out Ingredient ingredient))
             {
                 heldIngredient = ingredient.type;
                 heldItem = ingredient;
@@ -34,9 +36,9 @@ namespace Assets.Scripts.Player
                 ingredient.transform.parent = transform;
                 ingredient.transform.localPosition = heldItemPos;
             }
-            if(other.TryGetComponent(out Beaker beaker))
+            if (other.TryGetComponent(out Beaker beaker))
             {
-                if(heldIngredient != null)
+                if (heldIngredient != null)
                 {
                     heldPotion = (PotionType)(IngredientType)heldIngredient;
                     heldIngredient = null;
@@ -44,13 +46,17 @@ namespace Assets.Scripts.Player
                     Debug.Log($"Made potion {heldPotion}");
                 }
             }
-            if(other.TryGetComponent(out Door door))
+            if (other.TryGetComponent(out Door door))
             {
-                if(heldPotion == door.RequiredPotion)
+                if (heldPotion == door.RequiredPotion)
                 {
                     Debug.Log($"Telling {door.name} to do things.");
                     door.DoThings();
                 }
+            }
+            if (other.TryGetComponent(out EndLevelTrigger ignored) || other.name == "ELT")
+            {
+                GameManager.instance.UIManager.State = UIState.endLevel;
             }
         }
     }

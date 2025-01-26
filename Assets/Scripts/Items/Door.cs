@@ -1,9 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Assets.Scripts.Player
+namespace Assets.Scripts.Items
 {
-    internal class Door:MonoBehaviour
+    internal class Door : MonoBehaviour
     {
         public PotionType RequiredPotion;
         public Action OnDoorMelt = delegate { };
