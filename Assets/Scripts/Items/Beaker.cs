@@ -3,4 +3,11 @@
     internal class Beaker
     {
     }
+
+    public enum PotionType
+    {
+        Zero, 
+        One,
+        Two
+    }
 }

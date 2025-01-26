@@ -6,7 +6,7 @@ namespace Assets.Scripts.Player
     internal class Ingredient:MonoBehaviour
     {
         public Action Pop = delegate { };
-
+        [SerializeField] internal IngredientType type;
         [SerializeField] GameObject bubble;
 
         private void OnTriggerEnter(Collider other)
@@ -16,5 +16,12 @@ namespace Assets.Scripts.Player
                 bubble.SetActive(false);
             }
         }
+    }
+
+    public enum IngredientType
+    {
+        oran,
+        idk,
+        bird
     }
 }
