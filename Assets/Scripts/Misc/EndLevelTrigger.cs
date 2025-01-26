@@ -1,6 +1,8 @@
-﻿namespace Assets.Scripts.Misc
+﻿using UnityEngine;
+
+namespace Assets.Scripts.Misc
 {
-    internal class EndLevelTrigger
+    internal class EndLevelTrigger : MonoBehaviour
     {
     }
 }
