@@ -9,8 +9,6 @@ public class Timer : MonoBehaviour
     [SerializeField] private GameObject pauseMenuPanel; // Pause menu panel
     [SerializeField] private AudioSource backgroundMusic; // Reference to the existing audio source
     [SerializeField] private AudioSource gameOverMusic; // Reference to the Game Over audio source
-    [SerializeField] private Animator playerAnimator; // Reference to the player's animator
-    [SerializeField] private GameObject playerObject; // Reference to the player GameObject
 
     private float timer = 60f; // Start with 60 seconds
     private bool isGameOver = false;
@@ -56,11 +54,8 @@ public class Timer : MonoBehaviour
         timerText.text = Mathf.Ceil(Mathf.Max(timer, 0)).ToString();
     }
 
-    // Trigger Game Over when the timer hits 0
     private void TriggerGameOver()
     {
-        if (isGameOver) return;
-
         isGameOver = true; // Stop the timer
         IsGameOver = true; // Set the global flag to true
         gameOverPanel.SetActive(true); // Show Game Over panel
@@ -73,27 +68,6 @@ public class Timer : MonoBehaviour
         // Play the game-over music
         if (gameOverMusic != null)
             gameOverMusic.Play();
-
-        // Trigger player death logic (e.g., death animation)
-        HandlePlayerDeath();
-    }
-
-    // Handle player death logic
-    public void HandlePlayerDeath()
-    {
-        if (playerObject != null)
-        {
-            // Disable the player GameObject to prevent further movement
-            playerObject.SetActive(false);
-        }
-
-        if (playerAnimator != null)
-        {
-            // Play the death animation
-            playerAnimator.SetTrigger("Die");
-        }
-
-        Debug.Log("Player has died. Game Over triggered.");
     }
 
     private void TogglePause()
