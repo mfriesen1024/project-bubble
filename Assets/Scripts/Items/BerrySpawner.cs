@@ -18,6 +18,12 @@ public class BerryAndBeakerSpawner : MonoBehaviour
     public Vector3 beakerScale = new Vector3(1f, 1f, 1f); // Target scale for the beaker
     public float beakerHeightOffset = 0.5f; // Height offset above the floor
 
+    [Header("Gate Settings")]
+    public GameObject gatePrefab; // Gate (barrier) prefab
+    public List<Vector2Int> gatePositions; // Specific positions for gates
+    public Vector3 gateScale = new Vector3(1f, 1f, 1f); // Target scale for the gates
+    public float gateHeightOffset = 0.5f; // Height offset above the floor
+
     private void Awake()
     {
         gridManager = GetComponent<GridManager>();
@@ -27,6 +33,7 @@ public class BerryAndBeakerSpawner : MonoBehaviour
     {
         SpawnBerriesInAreas();
         SpawnBeakers();
+        SpawnGates();
     }
 
     private void SpawnBerriesInAreas()
@@ -42,27 +49,19 @@ public class BerryAndBeakerSpawner : MonoBehaviour
             BerryArea berryArea = berryAreas[i];
             GameObject berryPrefab = berryPrefabs[i];
 
-            // Collect all valid tile positions within the area
             List<Vector2Int> availablePositions = GetAvailablePositionsInTileList(berryArea);
 
-            // Skip if no valid positions are found
             if (availablePositions.Count == 0)
             {
                 Debug.LogWarning($"No valid positions found in area {berryArea.name} for berry spawning!");
                 continue;
             }
 
-            // Select a random position from the available positions
             Vector2Int spawnPosition = availablePositions[Random.Range(0, availablePositions.Count)];
-
-            // Use grid manager's GetWorldPosition to ensure correct rotation
             Vector3 berryPosition = gridManager.GetWorldPosition(spawnPosition);
-            berryPosition.y = berryHeightOffset; // Adjust height above the floor
+            berryPosition.y = berryHeightOffset;
 
-            // Instantiate the berry
             GameObject spawnedBerry = Instantiate(berryPrefab, berryPosition, Quaternion.identity, gridManager.transform);
-
-            // Fix the scale of the spawned berry
             spawnedBerry.transform.localScale = berryScale;
 
             Debug.Log($"Berry of type {berryPrefab.name} spawned in area {berryArea.name} at position {spawnPosition}");
@@ -71,14 +70,12 @@ public class BerryAndBeakerSpawner : MonoBehaviour
 
     private void SpawnBeakers()
     {
-        // Ensure there are positions specified for beakers
         if (beakerPositions == null || beakerPositions.Count == 0)
         {
             Debug.LogWarning("No positions specified for beakers!");
             return;
         }
 
-        // Spawn beakers at the specified positions
         foreach (Vector2Int spawnPosition in beakerPositions)
         {
             if (gridManager.wallPositions.Contains(spawnPosition))
@@ -87,17 +84,39 @@ public class BerryAndBeakerSpawner : MonoBehaviour
                 continue;
             }
 
-            // Use grid manager's GetWorldPosition to ensure correct rotation
             Vector3 beakerPosition = gridManager.GetWorldPosition(spawnPosition);
-            beakerPosition.y = beakerHeightOffset; // Adjust height above the floor
+            beakerPosition.y = beakerHeightOffset;
 
-            // Instantiate the beaker
             GameObject spawnedBeaker = Instantiate(beakerPrefab, beakerPosition, Quaternion.identity, gridManager.transform);
-
-            // Fix the scale of the spawned beaker
             spawnedBeaker.transform.localScale = beakerScale;
 
             Debug.Log($"Beaker spawned at position {spawnPosition}");
+        }
+    }
+
+    private void SpawnGates()
+    {
+        if (gatePositions == null || gatePositions.Count == 0)
+        {
+            Debug.LogWarning("No positions specified for gates!");
+            return;
+        }
+
+        foreach (Vector2Int spawnPosition in gatePositions)
+        {
+            if (gridManager.wallPositions.Contains(spawnPosition))
+            {
+                Debug.LogWarning($"Gate position {spawnPosition} overlaps with a wall. Skipping...");
+                continue;
+            }
+
+            Vector3 gatePosition = gridManager.GetWorldPosition(spawnPosition);
+            gatePosition.y = gateHeightOffset;
+
+            GameObject spawnedGate = Instantiate(gatePrefab, gatePosition, Quaternion.identity, gridManager.transform);
+            spawnedGate.transform.localScale = gateScale;
+
+            Debug.Log($"Gate spawned at position {spawnPosition}");
         }
     }
 
@@ -105,10 +124,8 @@ public class BerryAndBeakerSpawner : MonoBehaviour
     {
         List<Vector2Int> availablePositions = new List<Vector2Int>();
 
-        // Loop through the specific tiles
         foreach (Vector2Int position in berryArea.specificTiles)
         {
-            // Exclude tiles with walls
             if (!gridManager.wallPositions.Contains(position))
             {
                 availablePositions.Add(position);

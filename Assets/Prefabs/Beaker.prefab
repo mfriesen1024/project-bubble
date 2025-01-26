@@ -64,8 +64,32 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -3133498875991405556, guid: c6e27c07c7d0ff8458dbfea6dcc5a7d1, type: 3}
+      propertyPath: m_TagString
+      value: Beaker
+      objectReference: {fileID: 0}
+    - target: {fileID: -2330052792757402760, guid: c6e27c07c7d0ff8458dbfea6dcc5a7d1, type: 3}
+      propertyPath: m_TagString
+      value: Beaker
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c6e27c07c7d0ff8458dbfea6dcc5a7d1, type: 3}
       propertyPath: m_Name
+      value: Beaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c6e27c07c7d0ff8458dbfea6dcc5a7d1, type: 3}
+      propertyPath: m_TagString
+      value: Beaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 1134669073843215214, guid: c6e27c07c7d0ff8458dbfea6dcc5a7d1, type: 3}
+      propertyPath: m_TagString
+      value: Beaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 3025492192847002814, guid: c6e27c07c7d0ff8458dbfea6dcc5a7d1, type: 3}
+      propertyPath: m_TagString
+      value: Beaker
+      objectReference: {fileID: 0}
+    - target: {fileID: 4727112899758701339, guid: c6e27c07c7d0ff8458dbfea6dcc5a7d1, type: 3}
+      propertyPath: m_TagString
       value: Beaker
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -115,5 +139,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.5124769, y: 1.9804063, z: 1.7734308}
+  m_Center: {x: 0.02144146, y: 0.7461066, z: 0.07928848}

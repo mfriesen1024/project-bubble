@@ -64,11 +64,48 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bubble
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cfefe9a6c07ba0349ba9e1fce0b1433f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cfefe9a6c07ba0349ba9e1fce0b1433f, type: 3}
+      propertyPath: m_TagString
+      value: BubbleShield
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cfefe9a6c07ba0349ba9e1fce0b1433f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7798113902954651683}
   m_SourcePrefab: {fileID: 100100000, guid: cfefe9a6c07ba0349ba9e1fce0b1433f, type: 3}
+--- !u!1 &2497431770493735172 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cfefe9a6c07ba0349ba9e1fce0b1433f, type: 3}
+  m_PrefabInstance: {fileID: 3344416573677956181}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &7798113902954651683
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2497431770493735172}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.99999994
+  m_Center: {x: -0.00000002980232, y: 0, z: -2.2737368e-13}
 --- !u!4 &3018388503239953342 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cfefe9a6c07ba0349ba9e1fce0b1433f, type: 3}
@@ -179,7 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
-  bubble: {fileID: 919132149155446097, guid: cfefe9a6c07ba0349ba9e1fce0b1433f, type: 3}
+  bubble: {fileID: 919132149155446097, guid: 2d45f2112232041ff9084f9d457cf1a6, type: 3}
 --- !u!65 &-383059958847062027
 BoxCollider:
   m_ObjectHideFlags: 0

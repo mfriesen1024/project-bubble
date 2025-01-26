@@ -409,10 +409,6 @@ MonoBehaviour:
     - {x: 4, y: 6}
     - {x: 4, y: 7}
     - {x: 4, y: 8}
-    - {x: 5, y: 2}
-    - {x: 5, y: 6}
-    - {x: 5, y: 7}
-    - {x: 5, y: 8}
   - name: Berry2
     specificTiles:
     - {x: 5, y: 1}
@@ -434,7 +430,7 @@ MonoBehaviour:
     - {x: 7, y: 7}
     - {x: 7, y: 8}
   berryScale: {x: 0.25, y: 0.25, z: 0.25}
-  berryHeightOffset: 0.8
+  berryHeightOffset: 1
   beakerPrefab: {fileID: 4928166526135357390, guid: b2d83cdca24bf3945aabf336bccac162, type: 3}
   beakerPositions:
   - {x: 1, y: 8}
@@ -442,6 +438,13 @@ MonoBehaviour:
   - {x: 8, y: 8}
   beakerScale: {x: 0.5, y: 0.5, z: 0.5}
   beakerHeightOffset: 0.55
+  gatePrefab: {fileID: 974024890859280734, guid: 41dafdcdc034d0542baba4ff6b943d49, type: 3}
+  gatePositions:
+  - {x: 4, y: 2}
+  - {x: 6, y: 4}
+  - {x: 8, y: 5}
+  gateScale: {x: 1, y: 1, z: 1}
+  gateHeightOffset: 0.5
 --- !u!114 &695499818
 MonoBehaviour:
   m_ObjectHideFlags: 0

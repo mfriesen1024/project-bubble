@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - Wall
+  - Floor
+  - BubbleShield
+  - Beaker
   layers:
   - Default
   - TransparentFX

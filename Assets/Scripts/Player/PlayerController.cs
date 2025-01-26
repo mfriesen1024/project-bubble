@@ -20,8 +20,18 @@ public class PlayerController : MonoBehaviour
     private string wallTag = "Wall"; // Tag for wall objects adjustable in Inspector
 
     [SerializeField]
+    private string floorTag = "Floor"; // Tag for floor objects adjustable in Inspector
+
+    [SerializeField] 
+    private string beakerTag = "Beaker"; // Tag for Beaker object adjustable in Inspector
+
+
+    [SerializeField]
     private AudioClip[] walkSounds; // Array of walking sounds
     private AudioSource audioSource;
+
+    [SerializeField]
+    private Animator animator; // Animator for player animations
 
     void Start()
     {
@@ -40,6 +50,15 @@ public class PlayerController : MonoBehaviour
         }
         audioSource.playOnAwake = false; // Don't play audio on start
         audioSource.loop = false; // Ensure the clip does not loop
+
+        if (animator == null)
+        {
+            animator = GetComponent<Animator>();
+            if (animator == null)
+            {
+                Debug.LogWarning("Animator not assigned and not found on the GameObject.");
+            }
+        }
     }
 
     void Update()
@@ -72,6 +91,13 @@ public class PlayerController : MonoBehaviour
         {
             cameraTransform.position = transform.position + cameraOffset;
         }
+
+        if (animator != null)
+        {
+            animator.SetBool("isWalking", isMoving);
+        }
+
+        CheckFloorBelow();
     }
 
     private bool CanMove(Vector3 direction)
@@ -87,9 +113,36 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Blocked by wall: " + hit.collider.name);
                 return false; // Blocked by an object with the specified wall tag
             }
+            if (hit.collider.CompareTag(beakerTag))
+            {
+                Debug.Log("Blocked by beaker: " + hit.collider.name);
+                return false; // Blocked by an object with the specified beaker tag
+            }
+
         }
 
         return true; // No obstacles, movement allowed
+    }
+
+    private void CheckFloorBelow()
+    {
+        Ray downRay = new Ray(transform.position, Vector3.down);
+        RaycastHit hit;
+
+        if (Physics.Raycast(downRay, out hit, raycastDistance))
+        {
+            if (!hit.collider.CompareTag(floorTag))
+            {
+                Debug.LogWarning("Player is not standing on a valid floor!");
+                // Optional: Reset the player's position to the last valid position if needed
+                transform.position += Vector3.up * 0.1f; // Slightly move the player up to avoid sinking
+            }
+        }
+        else
+        {
+            Debug.LogWarning("No floor detected below the player!");
+            // Optional: Handle falling logic here if needed
+        }
     }
 
     private IEnumerator MovePlayer(Vector3 direction)

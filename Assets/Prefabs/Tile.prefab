@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 2746508962680736669}
   - component: {fileID: 3594687164141600524}
   - component: {fileID: 7169126119901194793}
+  - component: {fileID: 6316023080235336942}
   m_Layer: 0
   m_Name: Cube.013
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -87,6 +88,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6316023080235336942
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389044287795232617}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0120225735, y: 0.010000002, z: 0.009485462}
+  m_Center: {x: 0.0060112514, y: 0.004999998, z: 0.0047427393}
 --- !u!1 &2883095601308988852
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,7 +124,7 @@ GameObject:
   - component: {fileID: 5783050272096293058}
   m_Layer: 0
   m_Name: Tile
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

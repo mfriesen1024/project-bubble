@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 5067878373289765538}
   - component: {fileID: 5620493624129863543}
   - component: {fileID: -1586760564872349038}
+  - component: {fileID: -7422354334251619945}
   m_Layer: 0
   m_Name: MainPlayer
   m_TagString: Untagged
@@ -148,6 +149,8 @@ MonoBehaviour:
   cameraTransform: {fileID: 0}
   maxHealth: 100
   raycastDistance: 0.5
+  wallTag: Wall
+  floorTag: Floor
   walkSounds:
   - {fileID: 8300000, guid: 275e5e8eb7964914696441c85011fe63, type: 3}
   - {fileID: 8300000, guid: 923236744a1529a4cb3948f7b4f064f7, type: 3}
@@ -156,6 +159,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8d40253dbf98f464a969eed9dc421171, type: 3}
   - {fileID: 8300000, guid: 94d6eaf6af1321b41911d577224ce7f0, type: 3}
   - {fileID: 8300000, guid: 0fbfbb9b3ce136a4c95f1aaf136983b4, type: 3}
+  animator: {fileID: 0}
 --- !u!54 &5067878373289765538
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -216,7 +220,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 102f70d66c7da8d42b8f2e10a5e77a97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heldItemPos: {x: 0, y: 0, z: 0.5}
+  heldItemPos: {x: 0, y: 0.5, z: 0.5}
+  animator: {fileID: 0}
+--- !u!95 &-7422354334251619945
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024835121865707314}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1f1b55c019c1cf246b8b8745e6dc8cd0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 1
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2223336000239888601
 GameObject:
   m_ObjectHideFlags: 0
