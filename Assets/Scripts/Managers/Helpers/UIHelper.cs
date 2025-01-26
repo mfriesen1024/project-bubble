@@ -63,12 +63,12 @@ namespace Assets.Scripts.Managers.Helpers
 
         private void InitHud()
         {
-            throw new NotImplementedException();
+            Debug.LogException(new NotImplementedException());
         }
 
         private void InitPause()
         {
-            throw new NotImplementedException();
+            Debug.LogException(new NotImplementedException());
         }
     }
 }
