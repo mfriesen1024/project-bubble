@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class GridManager : MonoBehaviour
 {
+    [Header("Grid Settings")]
     public GameObject tilePrefab;   // Tile prefab
     public GameObject wallPrefab;  // Wall prefab
     public int gridWidth = 10;     // Grid width
@@ -10,7 +11,7 @@ public class GridManager : MonoBehaviour
     public float tileSize = 1f;    // Size of each tile
     public float wallSize = 1.5f;  // Size of each wall
 
-    // Define specific tiles as walls (hardcoded or dynamically loaded)
+    [Header("Wall Settings")]
     public List<Vector2Int> wallPositions = new List<Vector2Int>
     {
         new Vector2Int(1, 1),
@@ -19,8 +20,9 @@ public class GridManager : MonoBehaviour
         new Vector2Int(7, 7)
     };
 
+    [Header("Grid Transform")]
     public float distanceFromCenter = 10f; // Distance to position the grid from the origin
-    public Vector3 gridRotation = new Vector3(0, 0, 0); // Rotation of the grid in degrees
+    public Vector3 gridRotation = Vector3.zero; // Rotation of the grid in degrees
 
     private void Start()
     {
@@ -50,6 +52,8 @@ public class GridManager : MonoBehaviour
         {
             for (int z = 0; z < gridHeight; z++)
             {
+                Vector2Int gridPosition = new Vector2Int(x, z);
+
                 // Calculate tile position in local space
                 Vector3 tilePosition = new Vector3(x * tileSize, 0, z * tileSize);
 
@@ -66,53 +70,81 @@ public class GridManager : MonoBehaviour
                 }
 
                 // Check if this tile is a wall
-                bool isWall = wallPositions.Contains(new Vector2Int(x, z));
-
-                if (isWall)
+                if (wallPositions.Contains(gridPosition))
                 {
-                    // Correct the wall position to perfectly align with the grid
-                    Vector3 wallPosition = new Vector3(
-                        x * tileSize,
-                        wallPrefab.GetComponent<Renderer>().bounds.size.y / 2, // Ensure the wall sits on the floor
-                        z * tileSize
-                    );
-
-                    Vector3 worldWallPosition = transform.TransformPoint(wallPosition);
-
-                    GameObject wall = Instantiate(wallPrefab, worldWallPosition, Quaternion.identity, transform);
-
-                    // Adjust wall scale to match tile size without gaps
-                    wall.transform.localScale = new Vector3(tileSize, wall.transform.localScale.y, tileSize);
-
-                    // Add a box collider to the wall if not present
-                    if (wall.GetComponent<BoxCollider>() == null)
-                    {
-                        wall.AddComponent<BoxCollider>();
-                    }
-
-                    // Set the wall to be static to improve performance
-                    wall.isStatic = true;
+                    SpawnWall(gridPosition);
                 }
 
-                // Initialize the tile
+                // Initialize the tile (if it has a script)
                 Tile tileScript = tile.GetComponent<Tile>();
                 if (tileScript != null)
                 {
-                    tileScript.wallPrefab = wallPrefab; // Assign the wall prefab
-                    tileScript.Initialize(new Vector2Int(x, z), isWall);
+                    tileScript.wallPrefab = wallPrefab;
+                    tileScript.Initialize(gridPosition, wallPositions.Contains(gridPosition));
                 }
             }
         }
     }
 
-    // Function to transform object positions based on grid rotation
+    private void SpawnWall(Vector2Int gridPosition)
+    {
+        // Calculate the wall position
+        Vector3 wallPosition = new Vector3(
+            gridPosition.x * tileSize,
+            wallPrefab.GetComponent<Renderer>().bounds.size.y / 2, // Ensure the wall sits on the floor
+            gridPosition.y * tileSize
+        );
+
+        // Transform to world space with the grid's rotation
+        Vector3 worldWallPosition = transform.TransformPoint(wallPosition);
+
+        // Instantiate the wall
+        GameObject wall = Instantiate(wallPrefab, worldWallPosition, Quaternion.identity, transform);
+
+        // Adjust wall scale to match tile size without gaps
+        wall.transform.localScale = new Vector3(tileSize, wall.transform.localScale.y, tileSize);
+
+        // Add a box collider to the wall if not present
+        if (wall.GetComponent<BoxCollider>() == null)
+        {
+            wall.AddComponent<BoxCollider>();
+        }
+
+        // Set the wall to be static to improve performance
+        wall.isStatic = true;
+
+        Debug.Log($"Wall spawned at grid position {gridPosition}");
+    }
+
     public Vector3 GetWorldPosition(Vector2Int gridPosition)
     {
+        // Converts a grid position to world position
         Vector3 localPosition = new Vector3(
             gridPosition.x * tileSize,
             0,
             gridPosition.y * tileSize
         );
         return transform.TransformPoint(localPosition);
+    }
+
+    public List<Vector2Int> GetAllGridPositions()
+    {
+        // Returns all grid positions, excluding wall positions
+        List<Vector2Int> allPositions = new List<Vector2Int>();
+
+        for (int x = 0; x < gridWidth; x++)
+        {
+            for (int z = 0; z < gridHeight; z++)
+            {
+                Vector2Int position = new Vector2Int(x, z);
+
+                if (!wallPositions.Contains(position))
+                {
+                    allPositions.Add(position);
+                }
+            }
+        }
+
+        return allPositions;
     }
 }

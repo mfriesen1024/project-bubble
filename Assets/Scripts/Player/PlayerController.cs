@@ -13,138 +13,107 @@ public class PlayerController : MonoBehaviour
     public int maxHealth = 100;
     private int currentHealth;
 
-    [SerializeField]
-    private float raycastDistance = 0.25f; // Raycast distance adjustable in Inspector
+    [SerializeField] private GameObject gameOverPanel; // Reference to the Game Over panel
+    [SerializeField] private Animator animator; // Animator for player animations
 
-    [SerializeField]
-    private string wallTag = "Wall"; // Tag for wall objects adjustable in Inspector
+    private bool isGameOver = false; // Local game-over state to prevent further logic after death
 
-    [SerializeField]
-    private string floorTag = "Floor"; // Tag for floor objects adjustable in Inspector
-
-    [SerializeField]
-    private string beakerTag = "Beaker"; // Tag for Beaker object adjustable in Inspector
-
-    [SerializeField]
-    private AudioClip[] walkSounds; // Array of walking sounds
-
-    private AudioSource audioSource;
-
-    [SerializeField]
-    private Animator animator; // Animator for player animations
-
-    [Header("Walking Sound Controls")]
-    [Range(0f, 1f)][SerializeField] private float soundVolume = 1f; // Walking sound volume
-    [Range(0.1f, 3f)][SerializeField] private float soundPitch = 1f; // Walking sound pitch
-
-    void Start()
+    private void Start()
     {
+        currentHealth = maxHealth;
+
         if (cameraTransform != null)
         {
             cameraOffset = cameraTransform.position - transform.position;
         }
 
-        currentHealth = maxHealth;
-
-        // Get or add the AudioSource component
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
+        // Ensure the Game Over panel is hidden initially
+        if (gameOverPanel != null)
         {
-            audioSource = gameObject.AddComponent<AudioSource>();
+            gameOverPanel.SetActive(false);
         }
-        audioSource.playOnAwake = false; // Don't play audio on start
-        audioSource.loop = false; // Ensure the clip does not loop
-
-        if (animator == null)
+        else
         {
-            animator = GetComponent<Animator>();
-            if (animator == null)
-            {
-                Debug.LogWarning("Animator not assigned and not found on the GameObject.");
-            }
+            Debug.LogWarning("Game Over Panel is not assigned in the Inspector!");
         }
     }
 
-    void Update()
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W) && !isMoving && CanMove(Vector3.forward))
+        // If the game is already over, stop processing input
+        if (isGameOver || Timer.IsGameOver)
+        {
+            return;
+        }
+
+        // Handle movement input
+        if (Input.GetKeyDown(KeyCode.W) && !isMoving)
         {
             StartCoroutine(MovePlayer(Vector3.forward));
             transform.rotation = Quaternion.LookRotation(Vector3.forward);
         }
 
-        if (Input.GetKeyDown(KeyCode.A) && !isMoving && CanMove(Vector3.left))
+        if (Input.GetKeyDown(KeyCode.A) && !isMoving)
         {
             StartCoroutine(MovePlayer(Vector3.left));
             transform.rotation = Quaternion.LookRotation(Vector3.left);
         }
 
-        if (Input.GetKeyDown(KeyCode.S) && !isMoving && CanMove(Vector3.back))
+        if (Input.GetKeyDown(KeyCode.S) && !isMoving)
         {
             StartCoroutine(MovePlayer(Vector3.back));
             transform.rotation = Quaternion.LookRotation(Vector3.back);
         }
 
-        if (Input.GetKeyDown(KeyCode.D) && !isMoving && CanMove(Vector3.right))
+        if (Input.GetKeyDown(KeyCode.D) && !isMoving)
         {
             StartCoroutine(MovePlayer(Vector3.right));
             transform.rotation = Quaternion.LookRotation(Vector3.right);
         }
 
+        // Update camera position to follow the player
         if (cameraTransform != null)
         {
             cameraTransform.position = transform.position + cameraOffset;
         }
+    }
 
+    public void TakeDamage(int damage)
+    {
+        if (isGameOver || Timer.IsGameOver) return; // Prevent damage if the game is over
+
+        currentHealth -= damage;
+        Debug.Log($"Player took {damage} damage. Current health: {currentHealth}");
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        isGameOver = true; // Mark game-over state locally
+        Debug.Log("Player has died!");
+
+        // Disable player movement
+        this.enabled = false;
+
+        // Play the death animation
         if (animator != null)
         {
-            animator.SetBool("isWalking", isMoving);
+            animator.SetTrigger("Die");
         }
 
-        CheckFloorBelow();
-    }
-
-    private bool CanMove(Vector3 direction)
-    {
-        Ray ray = new Ray(transform.position, direction);
-        RaycastHit hit;
-
-        // Perform raycast
-        if (Physics.Raycast(ray, out hit, raycastDistance))
+        // Show the Game Over panel
+        if (gameOverPanel != null)
         {
-            if (hit.collider.CompareTag(wallTag))
-            {
-                Debug.Log("Blocked by wall: " + hit.collider.name);
-                return false; // Blocked by an object with the specified wall tag
-            }
-            if (hit.collider.CompareTag(beakerTag))
-            {
-                Debug.Log("Blocked by beaker: " + hit.collider.name);
-                return false; // Blocked by an object with the specified beaker tag
-            }
-        }
-
-        return true; // No obstacles, movement allowed
-    }
-
-    private void CheckFloorBelow()
-    {
-        Ray downRay = new Ray(transform.position, Vector3.down);
-        RaycastHit hit;
-
-        if (Physics.Raycast(downRay, out hit, raycastDistance))
-        {
-            if (!hit.collider.CompareTag(floorTag))
-            {
-                Debug.LogWarning("Player is not standing on a valid floor!");
-                // Optional: Reset the player's position to the last valid position if needed
-                transform.position += Vector3.up * 0.1f; // Slightly move the player up to avoid sinking
-            }
+            gameOverPanel.SetActive(true);
+            Debug.Log("Game Over Panel enabled.");
         }
         else
         {
-            Debug.LogWarning("No floor detected below the player!");
-            // Optional: Handle falling logic here if needed
+            Debug.LogWarning("Game Over Panel is not assigned in the Inspector!");
         }
     }
 
@@ -157,60 +126,15 @@ public class PlayerController : MonoBehaviour
         origPos = transform.position;
         targetPos = origPos + direction;
 
-        // Play a random walking sound
-        PlayRandomWalkSound();
-
         while (elapsedTime < timeToMove)
         {
             transform.position = Vector3.Lerp(origPos, targetPos, (elapsedTime / timeToMove));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+
         transform.position = targetPos;
 
         isMoving = false;
-    }
-
-    private void PlayRandomWalkSound()
-    {
-        if (walkSounds != null && walkSounds.Length > 0 && audioSource != null)
-        {
-            // Select a random clip from the array
-            AudioClip randomClip = walkSounds[Random.Range(0, walkSounds.Length)];
-            audioSource.clip = randomClip;
-
-            // Apply volume and pitch settings
-            audioSource.volume = soundVolume;
-            audioSource.pitch = soundPitch;
-
-            audioSource.Play();
-        }
-        else
-        {
-            Debug.LogWarning("No walking sounds assigned or AudioSource is not set!");
-        }
-    }
-
-    public void TakeDamage(int damage)
-    {
-        currentHealth -= damage;
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
-    public void Heal(int amount)
-    {
-        currentHealth += amount;
-        if (currentHealth > maxHealth)
-        {
-            currentHealth = maxHealth;
-        }
-    }
-
-    private void Die()
-    {
-        Debug.Log("Player has died.");
     }
 }
