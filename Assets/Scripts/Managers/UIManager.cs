@@ -46,6 +46,12 @@ namespace Assets.Scripts.Managers
                 element.gameObject.SetActive(false);
             }
         }
+
+        private void Update()
+        {
+            // Is this the wrong spot for a pause input check? well too bad.
+            if(State == UIState.hud && Input.GetKey(KeyCode.Escape)) { State = UIState.pause; }
+        }
     }
 
     public enum UIState

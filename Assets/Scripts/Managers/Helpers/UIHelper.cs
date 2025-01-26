@@ -68,7 +68,12 @@ namespace Assets.Scripts.Managers.Helpers
 
         private void InitPause()
         {
-            Debug.LogException(new NotImplementedException());
+            Button[] buttons = instructions.GetComponentsInChildren<Button>();
+            buttons[0].onClick.AddListener(OnResume);
+            buttons[1].onClick.AddListener(OnReturnToMenu);
+
+            void OnResume() { uiman.State = UIState.hud; }
+            void OnReturnToMenu() { uiman.State = UIState.menu; }
         }
     }
 }
