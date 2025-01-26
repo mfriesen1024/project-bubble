@@ -25,6 +25,8 @@ namespace Assets.Scripts.Managers
             if (UIManager == null) { Debug.LogError("LF UIMan! Help!"); }
             else { UIManager.Ready(); }
 
+            Debug.Log("GM Initialized!");
+
             // Once we're done initialization, tell the UIMan to load the game.
             UIManager.State=UIState.menu;
         }

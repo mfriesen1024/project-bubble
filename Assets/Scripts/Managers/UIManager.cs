@@ -22,6 +22,8 @@ namespace Assets.Scripts.Managers
         {
             uIHelper = new UIHelper(this);
 
+            Debug.Log("UIMan Initialized!");
+
             State = UIState.menu;
         }
 
