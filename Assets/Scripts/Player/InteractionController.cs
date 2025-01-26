@@ -9,6 +9,8 @@ namespace Assets.Scripts.Player
         public Action OnInteract;
         public IngredientType? heldIngredient = null;
         public PotionType? heldPotion = null;
+        Ingredient heldItem;
+        [SerializeField] Vector3 heldItemPos = Vector3.one;
 
         // Use this for initialization
         void Start()
@@ -24,10 +26,13 @@ namespace Assets.Scripts.Player
 
         private void OnTriggerEnter(Collider other)
         {
-            if(other.TryGetComponent(out Ingredient bubbledIngredient))
+            if(other.TryGetComponent(out Ingredient ingredient))
             {
-                heldIngredient = bubbledIngredient.type;
+                heldIngredient = ingredient.type;
+                heldItem = ingredient;
                 Debug.Log($"Got ingredient {heldIngredient}");
+                ingredient.transform.parent = transform;
+                ingredient.transform.localPosition = heldItemPos;
             }
             if(other.TryGetComponent(out Beaker beaker))
             {
@@ -35,6 +40,7 @@ namespace Assets.Scripts.Player
                 {
                     heldPotion = (PotionType)(IngredientType)heldIngredient;
                     heldIngredient = null;
+                    heldItem.gameObject.SetActive(false);
                     Debug.Log($"Made potion {heldPotion}");
                 }
             }

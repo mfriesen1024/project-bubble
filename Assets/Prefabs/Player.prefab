@@ -166,3 +166,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 102f70d66c7da8d42b8f2e10a5e77a97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  heldItemPos: {x: 0, y: 0, z: 0.5}
