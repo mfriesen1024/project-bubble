@@ -59,6 +59,7 @@ namespace Assets.Scripts.Managers
         menu,
         instructions,
         hud,
-        pause
+        pause,
+        endLevel
     }
 }

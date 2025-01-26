@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Managers;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -51,6 +52,10 @@ namespace Assets.Scripts.Player
                     Debug.Log($"Telling {door.name} to do things.");
                     door.DoThings();
                 }
+            }
+            if (other.TryGetComponent(out EndLevelTrigger ignored)||other.name == "ELT")
+            {
+                GameManager.instance.UIManager.State=UIState.endLevel;
             }
         }
     }
