@@ -105,7 +105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  bubble: {fileID: 919132149155446097, guid: cfefe9a6c07ba0349ba9e1fce0b1433f, type: 3}
+  bubble: {fileID: 3853231314943354776}
 --- !u!65 &-2259048850219332865
 BoxCollider:
   m_ObjectHideFlags: 0
