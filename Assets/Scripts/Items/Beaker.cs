@@ -1,6 +1,8 @@
-﻿namespace Assets.Scripts.Player
+﻿using UnityEngine;
+
+namespace Assets.Scripts.Player
 {
-    internal class Beaker
+    internal class Beaker:MonoBehaviour
     {
     }
 
