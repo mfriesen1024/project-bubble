@@ -6,9 +6,9 @@ namespace Assets.Scripts.Items
 {
     internal class Ingredient : MonoBehaviour
     {
-        public Action Pop = delegate { };
-        [SerializeField] internal IngredientType type;
-        [SerializeField] GameObject bubble;
+        public Action Pop = delegate { }; // Pop action
+        [SerializeField] internal IngredientType type; // Type of the ingredient
+        [SerializeField] GameObject bubble; // Reference to bubble GameObject
 
         private void OnTriggerEnter(Collider other)
         {

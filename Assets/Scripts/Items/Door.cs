@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Items
 {
-    internal class Door : MonoBehaviour
+    public class Door : MonoBehaviour
     {
         public PotionType RequiredPotion;
         public Action OnDoorMelt = delegate { };

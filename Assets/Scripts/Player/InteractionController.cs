@@ -16,6 +16,9 @@ namespace Assets.Scripts.Player
         [SerializeField] private Vector3 heldItemPos = Vector3.one;
         [SerializeField] private Animator animator; // Reference to Animator
 
+        [SerializeField] private AudioClip[] dropSounds; // Array of drop sound clips
+        [SerializeField] private float soundVolume = 1.0f; // Volume for the sounds
+
         private static readonly int IsHolding = Animator.StringToHash("isHolding"); // Animation parameter
 
         // Initialization
@@ -67,6 +70,9 @@ namespace Assets.Scripts.Player
 
                     if (heldItem != null)
                     {
+                        // Play a random drop sound
+                        PlayRandomDropSound();
+
                         heldItem.gameObject.SetActive(false);
                         heldItem = null;
                     }
@@ -100,6 +106,23 @@ namespace Assets.Scripts.Player
             if (other.TryGetComponent(out EndLevelTrigger ignored) || other.name == "ELT")
             {
                 GameManager.instance.UIManager.State = UIState.endLevel;
+            }
+        }
+
+        private void PlayRandomDropSound()
+        {
+            if (dropSounds != null && dropSounds.Length > 0)
+            {
+                // Select a random sound from the array
+                int randomIndex = UnityEngine.Random.Range(0, dropSounds.Length);
+                AudioClip randomSound = dropSounds[randomIndex];
+
+                // Play the sound at the current position
+                AudioSource.PlayClipAtPoint(randomSound, transform.position, soundVolume);
+            }
+            else
+            {
+                Debug.LogWarning("Drop sounds array is empty or not assigned.");
             }
         }
     }
