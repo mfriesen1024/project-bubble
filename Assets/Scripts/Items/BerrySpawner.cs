@@ -7,22 +7,36 @@ public class BerryAndBeakerSpawner : MonoBehaviour
     private GridManager gridManager;
 
     [Header("Berry Settings")]
-    public List<GameObject> berryPrefabs; // List of berry prefabs
-    public List<BerryArea> berryAreas; // List of areas where berries can spawn
-    public Vector3 berryScale = new Vector3(1f, 1f, 1f); // Target scale for spawned berries
-    public float berryHeightOffset = 0.5f; // Height offset above the floor
+    public List<GameObject> berryPrefabs;
+    public List<BerryArea> berryAreas;
+    public Vector3 berryScale = new Vector3(1f, 1f, 1f);
+    public float berryHeightOffset = 0.5f;
 
     [Header("Beaker Settings")]
-    public GameObject beakerPrefab; // Beaker prefab
-    public List<Vector2Int> beakerPositions; // Manually specify positions for beakers
-    public Vector3 beakerScale = new Vector3(1f, 1f, 1f); // Target scale for the beaker
-    public float beakerHeightOffset = 0.5f; // Height offset above the floor
+    public GameObject beakerPrefab;
+    public List<Vector2Int> beakerPositions;
+    public Vector3 beakerScale = new Vector3(1f, 1f, 1f);
+    public float beakerHeightOffset = 0.5f;
 
     [Header("Gate Settings")]
-    public GameObject gatePrefab; // Gate (barrier) prefab
-    public List<Vector2Int> gatePositions; // Specific positions for gates
-    public Vector3 gateScale = new Vector3(1f, 1f, 1f); // Target scale for the gates
-    public float gateHeightOffset = 0.5f; // Height offset above the floor
+    public GameObject gatePrefab;
+    public List<Vector2Int> gatePositions;
+    public Vector3 gateScale = new Vector3(1f, 1f, 1f);
+    public float gateHeightOffset = 0.5f;
+
+    [Header("Finish Point Settings")]
+    public GameObject finishPointPrefab;
+    public Vector2Int finishPointPosition;
+    public Vector3 finishPointScale = new Vector3(1f, 1f, 1f);
+    public float finishPointHeightOffset = 0.5f;
+    public GameObject gameWonPanel;
+
+    [Header("Audio Settings")]
+    public AudioSource existingAudioSource;
+    public AudioSource newAudioSource;
+
+    [Header("Input Settings")]
+    public bool disableWASDInput = false;
 
     private void Awake()
     {
@@ -34,6 +48,40 @@ public class BerryAndBeakerSpawner : MonoBehaviour
         SpawnBerriesInAreas();
         SpawnBeakers();
         SpawnGates();
+        SpawnFinishPoint();
+    }
+
+    private void Update()
+    {
+        HandleInput(); // Handle keyboard input dynamically
+    }
+
+    private void HandleInput()
+    {
+        if (disableWASDInput)
+        {
+            // Disable WASD input by consuming the key events
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+            {
+                Debug.Log("WASD input is disabled.");
+            }
+        }
+    }
+
+    public void SwitchAudioSources()
+    {
+        if (existingAudioSource != null)
+        {
+            existingAudioSource.Stop();
+            existingAudioSource.enabled = false;
+        }
+
+        if (newAudioSource != null)
+        {
+            newAudioSource.enabled = true;
+            newAudioSource.Play();
+            Debug.Log("Audio source switched.");
+        }
     }
 
     private void SpawnBerriesInAreas()
@@ -120,6 +168,26 @@ public class BerryAndBeakerSpawner : MonoBehaviour
         }
     }
 
+    private void SpawnFinishPoint()
+    {
+        if (finishPointPrefab == null || gameWonPanel == null)
+        {
+            Debug.LogError("Finish point prefab or game won panel is not assigned!");
+            return;
+        }
+
+        Vector3 finishPosition = gridManager.GetWorldPosition(finishPointPosition);
+        finishPosition.y = finishPointHeightOffset;
+
+        GameObject spawnedFinishPoint = Instantiate(finishPointPrefab, finishPosition, Quaternion.identity, gridManager.transform);
+        spawnedFinishPoint.transform.localScale = finishPointScale;
+
+        FinishPoint finishPointScript = spawnedFinishPoint.AddComponent<FinishPoint>();
+        finishPointScript.gameWonPanel = gameWonPanel;
+
+        Debug.Log($"Finish point spawned at position {finishPointPosition}");
+    }
+
     private List<Vector2Int> GetAvailablePositionsInTileList(BerryArea berryArea)
     {
         List<Vector2Int> availablePositions = new List<Vector2Int>();
@@ -139,6 +207,20 @@ public class BerryAndBeakerSpawner : MonoBehaviour
 [System.Serializable]
 public class BerryArea
 {
-    public string name; // Name of the area (optional)
-    public List<Vector2Int> specificTiles; // Specific tile positions for berry spawning
+    public string name;
+    public List<Vector2Int> specificTiles;
+}
+
+public class FinishPoint : MonoBehaviour
+{
+    public GameObject gameWonPanel;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player")) // Assuming the player has the tag "Player"
+        {
+            gameWonPanel.SetActive(true);
+            Debug.Log("Game won! Finish point reached.");
+        }
+    }
 }
