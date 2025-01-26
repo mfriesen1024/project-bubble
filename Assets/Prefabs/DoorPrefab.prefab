@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RequiredPotion: 0
   wallCollider: {fileID: 2015685993844763159}
+  destructionSound: {fileID: 8300000, guid: 58f17565b8dcb4b42b7abac0177d1894, type: 3}
 --- !u!65 &6326181635061766462
 BoxCollider:
   m_ObjectHideFlags: 0

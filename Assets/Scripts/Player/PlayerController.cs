@@ -22,16 +22,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private string floorTag = "Floor"; // Tag for floor objects adjustable in Inspector
 
-    [SerializeField] 
+    [SerializeField]
     private string beakerTag = "Beaker"; // Tag for Beaker object adjustable in Inspector
-
 
     [SerializeField]
     private AudioClip[] walkSounds; // Array of walking sounds
+
     private AudioSource audioSource;
 
     [SerializeField]
     private Animator animator; // Animator for player animations
+
+    [Header("Walking Sound Controls")]
+    [Range(0f, 1f)][SerializeField] private float soundVolume = 1f; // Walking sound volume
+    [Range(0.1f, 3f)][SerializeField] private float soundPitch = 1f; // Walking sound pitch
 
     void Start()
     {
@@ -118,7 +122,6 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Blocked by beaker: " + hit.collider.name);
                 return false; // Blocked by an object with the specified beaker tag
             }
-
         }
 
         return true; // No obstacles, movement allowed
@@ -175,6 +178,11 @@ public class PlayerController : MonoBehaviour
             // Select a random clip from the array
             AudioClip randomClip = walkSounds[Random.Range(0, walkSounds.Length)];
             audioSource.clip = randomClip;
+
+            // Apply volume and pitch settings
+            audioSource.volume = soundVolume;
+            audioSource.pitch = soundPitch;
+
             audioSource.Play();
         }
         else
