@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Assets.Scripts.Items;
 
 [RequireComponent(typeof(GridManager))]
 public class BerryAndBeakerSpawner : MonoBehaviour
@@ -150,8 +151,9 @@ public class BerryAndBeakerSpawner : MonoBehaviour
             return;
         }
 
-        foreach (Vector2Int spawnPosition in gatePositions)
+        for (int i = 0; i < gatePositions.Count; i++)
         {
+            Vector2Int spawnPosition = gatePositions[i];
             if (gridManager.wallPositions.Contains(spawnPosition))
             {
                 Debug.LogWarning($"Gate position {spawnPosition} overlaps with a wall. Skipping...");
@@ -163,6 +165,10 @@ public class BerryAndBeakerSpawner : MonoBehaviour
 
             GameObject spawnedGate = Instantiate(gatePrefab, gatePosition, Quaternion.identity, gridManager.transform);
             spawnedGate.transform.localScale = gateScale;
+
+            // Apparently doors are spawned by area index, but the ingerdients are spawned in inverse order? This fixes that.
+            PotionType requiredPotion = (PotionType)(2 - i);
+            if(spawnedGate.TryGetComponent(out Door doorComponent)) { doorComponent.RequiredPotion = requiredPotion; }
 
             Debug.Log($"Gate spawned at position {spawnPosition}");
         }
