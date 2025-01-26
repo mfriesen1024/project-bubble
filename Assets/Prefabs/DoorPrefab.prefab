@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 2015685993844763159}
   m_Layer: 6
   m_Name: TempMesh
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
