@@ -39,7 +39,10 @@ namespace Assets.Scripts.Managers
 
         private void Hideall()
         {
-            foreach (var element in UIElements) { element.gameObject.SetActive(false); }
+            foreach (var element in UIElements)
+            {
+                element.gameObject.SetActive(false);
+            }
         }
     }
 
