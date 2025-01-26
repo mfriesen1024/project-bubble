@@ -106,6 +106,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   bubble: {fileID: 3853231314943354776}
+  popSounds:
+  - {fileID: 8300000, guid: f1019d451c9d4504391add0e2143e311, type: 3}
+  - {fileID: 8300000, guid: a1279b01297c61c47939a8c1229f136d, type: 3}
+  - {fileID: 8300000, guid: fb3e6e4b8ed485644a4d12d5c3aaf867, type: 3}
 --- !u!65 &-2259048850219332865
 BoxCollider:
   m_ObjectHideFlags: 0

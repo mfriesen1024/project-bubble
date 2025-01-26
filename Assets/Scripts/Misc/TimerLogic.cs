@@ -6,10 +6,13 @@ public class Timer : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI timerText; // Timer text (TextMeshPro)
     [SerializeField] private GameObject gameOverPanel; // Game Over panel
+    [SerializeField] private GameObject pauseMenuPanel; // Pause menu panel
     [SerializeField] private AudioSource backgroundMusic; // Reference to the existing audio source
     [SerializeField] private AudioSource gameOverMusic; // Reference to the Game Over audio source
+
     private float timer = 60f; // Start with 60 seconds
     private bool isGameOver = false;
+    private bool isPaused = false; // Pause state flag
 
     public static bool IsGameOver { get; private set; } = false; // Static flag to disable input globally
 
@@ -17,6 +20,7 @@ public class Timer : MonoBehaviour
     {
         UpdateTimerUI(); // Initialize the timer text
         gameOverPanel.SetActive(false); // Ensure Game Over panel is hidden
+        pauseMenuPanel.SetActive(false); // Ensure Pause menu is hidden
 
         // Ensure the game-over music is not playing initially
         if (gameOverMusic != null)
@@ -25,7 +29,14 @@ public class Timer : MonoBehaviour
 
     private void Update()
     {
-        if (!isGameOver)
+        // Check for pause input using both P and Escape keys
+        if ((Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape)) && !isGameOver)
+        {
+            TogglePause();
+        }
+
+        // Reduce timer if not paused or game over
+        if (!isGameOver && !isPaused)
         {
             timer -= Time.deltaTime; // Reduce the timer
             UpdateTimerUI();
@@ -59,9 +70,39 @@ public class Timer : MonoBehaviour
             gameOverMusic.Play();
     }
 
+    private void TogglePause()
+    {
+        isPaused = !isPaused; // Toggle pause state
+        pauseMenuPanel.SetActive(isPaused); // Show or hide the pause menu
+
+        if (isPaused)
+        {
+            Time.timeScale = 0; // Pause the game (freeze time)
+            if (backgroundMusic != null)
+                backgroundMusic.Pause(); // Pause background music
+        }
+        else
+        {
+            Time.timeScale = 1; // Resume the game
+            if (backgroundMusic != null)
+                backgroundMusic.Play(); // Resume background music
+        }
+    }
+
+    // Button Function: Resume game
+    public void ResumeGame()
+    {
+        isPaused = false;
+        pauseMenuPanel.SetActive(false);
+        Time.timeScale = 1; // Resume time
+        if (backgroundMusic != null)
+            backgroundMusic.Play(); // Resume music
+    }
+
     // Button Function: Restart the current scene
     public void TryAgain()
     {
+        Time.timeScale = 1; // Reset time scale
         IsGameOver = false; // Reset the global flag
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload current scene
     }
@@ -69,9 +110,10 @@ public class Timer : MonoBehaviour
     // Button Function: Load the main menu scene
     public void BackToMenu()
     {
+        Time.timeScale = 1; // Reset time scale
         IsGameOver = false; // Reset the global flag
 
-       // Stop the current audio source
+        // Stop the current audio source
         if (backgroundMusic != null)
             backgroundMusic.Stop();
 

@@ -161,6 +161,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 94d6eaf6af1321b41911d577224ce7f0, type: 3}
   - {fileID: 8300000, guid: 0fbfbb9b3ce136a4c95f1aaf136983b4, type: 3}
   animator: {fileID: 0}
+  soundVolume: 0.483
+  soundPitch: 1
 --- !u!54 &5067878373289765538
 Rigidbody:
   m_ObjectHideFlags: 0
