@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 3860510297135870966}
   - component: {fileID: 5067878373289765538}
   - component: {fileID: 5620493624129863543}
+  - component: {fileID: -1586760564872349038}
   m_Layer: 0
   m_Name: MainPlayer
   m_TagString: Untagged
@@ -147,6 +148,14 @@ MonoBehaviour:
   cameraTransform: {fileID: 0}
   maxHealth: 100
   raycastDistance: 0.5
+  walkSounds:
+  - {fileID: 8300000, guid: 275e5e8eb7964914696441c85011fe63, type: 3}
+  - {fileID: 8300000, guid: 923236744a1529a4cb3948f7b4f064f7, type: 3}
+  - {fileID: 8300000, guid: 2aaf8c9b36221714bb7fdd5d9ef8a9c0, type: 3}
+  - {fileID: 8300000, guid: 73c961c27d85955498605617f4f7879a, type: 3}
+  - {fileID: 8300000, guid: 8d40253dbf98f464a969eed9dc421171, type: 3}
+  - {fileID: 8300000, guid: 94d6eaf6af1321b41911d577224ce7f0, type: 3}
+  - {fileID: 8300000, guid: 0fbfbb9b3ce136a4c95f1aaf136983b4, type: 3}
 --- !u!54 &5067878373289765538
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -195,6 +204,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.77958685, y: 0.71886367, z: 0.52359426}
   m_Center: {x: 0.009488374, y: 0.3536043, z: -0.04938364}
+--- !u!114 &-1586760564872349038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024835121865707314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 102f70d66c7da8d42b8f2e10a5e77a97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heldItemPos: {x: 0, y: 0, z: 0.5}
 --- !u!1 &2223336000239888601
 GameObject:
   m_ObjectHideFlags: 0

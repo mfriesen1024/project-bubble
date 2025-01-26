@@ -16,6 +16,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float raycastDistance = 0.25f; // Raycast distance adjustable in Inspector
 
+    [SerializeField]
+    private AudioClip[] walkSounds; // Array of walking sounds
+    private AudioSource audioSource;
+
     void Start()
     {
         if (cameraTransform != null)
@@ -24,6 +28,15 @@ public class PlayerController : MonoBehaviour
         }
 
         currentHealth = maxHealth;
+
+        // Get or add the AudioSource component
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        audioSource.playOnAwake = false; // Don't play audio on start
+        audioSource.loop = false; // Ensure the clip does not loop
     }
 
     void Update()
@@ -82,6 +95,9 @@ public class PlayerController : MonoBehaviour
         origPos = transform.position;
         targetPos = origPos + direction;
 
+        // Play a random walking sound
+        PlayRandomWalkSound();
+
         while (elapsedTime < timeToMove)
         {
             transform.position = Vector3.Lerp(origPos, targetPos, (elapsedTime / timeToMove));
@@ -91,6 +107,21 @@ public class PlayerController : MonoBehaviour
         transform.position = targetPos;
 
         isMoving = false;
+    }
+
+    private void PlayRandomWalkSound()
+    {
+        if (walkSounds != null && walkSounds.Length > 0 && audioSource != null)
+        {
+            // Select a random clip from the array
+            AudioClip randomClip = walkSounds[Random.Range(0, walkSounds.Length)];
+            audioSource.clip = randomClip;
+            audioSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning("No walking sounds assigned or AudioSource is not set!");
+        }
     }
 
     public void TakeDamage(int damage)

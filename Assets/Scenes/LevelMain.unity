@@ -382,9 +382,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   berryPrefabs:
-  - {fileID: 6846131436885449264, guid: cebe2ac1632aa9e46ab9f610abae8529, type: 3}
-  - {fileID: 8597195079451623138, guid: 24b2523c95ff969409a473dc7f963a97, type: 3}
-  - {fileID: 3407141915495225602, guid: 393ef669fef487d4b9c970918a770474, type: 3}
+  - {fileID: 5365911236097655799, guid: cebe2ac1632aa9e46ab9f610abae8529, type: 3}
+  - {fileID: 3203357357247363024, guid: 24b2523c95ff969409a473dc7f963a97, type: 3}
+  - {fileID: 5187804592763288794, guid: 393ef669fef487d4b9c970918a770474, type: 3}
   berryAreas:
   - name: Berry1
     specificTiles:
@@ -435,7 +435,7 @@ MonoBehaviour:
     - {x: 7, y: 8}
   berryScale: {x: 0.25, y: 0.25, z: 0.25}
   berryHeightOffset: 0.8
-  beakerPrefab: {fileID: 919132149155446097, guid: c6e27c07c7d0ff8458dbfea6dcc5a7d1, type: 3}
+  beakerPrefab: {fileID: 4928166526135357390, guid: b2d83cdca24bf3945aabf336bccac162, type: 3}
   beakerPositions:
   - {x: 1, y: 8}
   - {x: 7, y: 3}
