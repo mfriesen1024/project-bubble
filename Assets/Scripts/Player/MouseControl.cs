@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/*
 public class MouseControl : MonoBehaviour
 {
     [SerializeField] private Camera camera;
@@ -54,3 +55,4 @@ public class MouseControl : MonoBehaviour
         }
     }
 }
+*/

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+/*
 public class WallObject : DropingObject
 {
     void Start()
@@ -7,3 +8,4 @@ public class WallObject : DropingObject
         activating = true;
     }
 }
+*/

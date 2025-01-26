@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+
+/*
 public abstract class DragableObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [HideInInspector] public Transform parentAfterDrag;
@@ -36,3 +38,4 @@ public abstract class DragableObject : MonoBehaviour, IBeginDragHandler, IDragHa
         Destroy(gameObject);
     }
 }
+*/

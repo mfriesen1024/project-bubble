@@ -1,5 +1,6 @@
 using UnityEngine;
 
+/*
 public class PotionObject : DragableObject
 {
     public IngredientObject[] ingredients;
@@ -14,3 +15,4 @@ public class PotionObject : DragableObject
         base.Activate(obj);
     }
 }
+*/
