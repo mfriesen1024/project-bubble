@@ -14,8 +14,9 @@ namespace Assets.Scripts.Items
         {
             OnDoorMelt();
 
-            // This is temporary.
             wallCollider.enabled = false;
+            // While waiting for door animations, just delete the entire door.
+            Destroy(gameObject);
         }
     }
 }
