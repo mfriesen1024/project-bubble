@@ -19,9 +19,29 @@ public class GridManager : MonoBehaviour
         new Vector2Int(7, 7)
     };
 
+    public float distanceFromCenter = 10f; // Distance to position the grid from the origin
+    public Vector3 gridRotation = new Vector3(0, 0, 0); // Rotation of the grid in degrees
+
     private void Start()
     {
+        PositionGridAtCenter();
         GenerateGrid();
+    }
+
+    private void PositionGridAtCenter()
+    {
+        // Calculate the center position of the grid
+        float gridWidthWorld = gridWidth * tileSize;
+        float gridHeightWorld = gridHeight * tileSize;
+
+        // Calculate the position relative to the origin
+        Vector3 spawnPosition = new Vector3(-gridWidthWorld / 2f, 0f, -gridHeightWorld / 2f);
+
+        // Apply the position and rotation to the GridManager
+        transform.position = spawnPosition;
+        transform.rotation = Quaternion.Euler(gridRotation);
+
+        Debug.Log($"GridManager positioned at: {spawnPosition} with rotation: {gridRotation}");
     }
 
     private void GenerateGrid()
@@ -30,11 +50,20 @@ public class GridManager : MonoBehaviour
         {
             for (int z = 0; z < gridHeight; z++)
             {
-                // Calculate tile position in world space
+                // Calculate tile position in local space
                 Vector3 tilePosition = new Vector3(x * tileSize, 0, z * tileSize);
 
+                // Transform to world space with the grid's rotation
+                Vector3 worldTilePosition = transform.TransformPoint(tilePosition);
+
                 // Instantiate the tile
-                GameObject tile = Instantiate(tilePrefab, tilePosition, Quaternion.identity, transform);
+                GameObject tile = Instantiate(tilePrefab, worldTilePosition, Quaternion.identity, transform);
+
+                // Add a box collider to the tile if not present
+                if (tile.GetComponent<BoxCollider>() == null)
+                {
+                    tile.AddComponent<BoxCollider>();
+                }
 
                 // Check if this tile is a wall
                 bool isWall = wallPositions.Contains(new Vector2Int(x, z));
@@ -48,17 +77,21 @@ public class GridManager : MonoBehaviour
                         z * tileSize
                     );
 
-                    GameObject wall = Instantiate(wallPrefab, wallPosition, Quaternion.identity, transform);
+                    Vector3 worldWallPosition = transform.TransformPoint(wallPosition);
+
+                    GameObject wall = Instantiate(wallPrefab, worldWallPosition, Quaternion.identity, transform);
 
                     // Adjust wall scale to match tile size without gaps
                     wall.transform.localScale = new Vector3(tileSize, wall.transform.localScale.y, tileSize);
 
-                    // Snap wall to grid by rounding its position to avoid minor offsets
-                    wall.transform.position = new Vector3(
-                        Mathf.Round(wall.transform.position.x / tileSize) * tileSize,
-                        wall.transform.position.y,
-                        Mathf.Round(wall.transform.position.z / tileSize) * tileSize
-                    );
+                    // Add a box collider to the wall if not present
+                    if (wall.GetComponent<BoxCollider>() == null)
+                    {
+                        wall.AddComponent<BoxCollider>();
+                    }
+
+                    // Set the wall to be static to improve performance
+                    wall.isStatic = true;
                 }
 
                 // Initialize the tile
@@ -70,5 +103,16 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    // Function to transform object positions based on grid rotation
+    public Vector3 GetWorldPosition(Vector2Int gridPosition)
+    {
+        Vector3 localPosition = new Vector3(
+            gridPosition.x * tileSize,
+            0,
+            gridPosition.y * tileSize
+        );
+        return transform.TransformPoint(localPosition);
     }
 }

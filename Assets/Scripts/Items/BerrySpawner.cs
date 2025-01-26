@@ -54,11 +54,10 @@ public class BerryAndBeakerSpawner : MonoBehaviour
 
             // Select a random position from the available positions
             Vector2Int spawnPosition = availablePositions[Random.Range(0, availablePositions.Count)];
-            Vector3 berryPosition = new Vector3(
-                spawnPosition.x * gridManager.tileSize,
-                berryHeightOffset, // Place berry above the floor
-                spawnPosition.y * gridManager.tileSize
-            );
+
+            // Use grid manager's GetWorldPosition to ensure correct rotation
+            Vector3 berryPosition = gridManager.GetWorldPosition(spawnPosition);
+            berryPosition.y = berryHeightOffset; // Adjust height above the floor
 
             // Instantiate the berry
             GameObject spawnedBerry = Instantiate(berryPrefab, berryPosition, Quaternion.identity, gridManager.transform);
@@ -88,11 +87,9 @@ public class BerryAndBeakerSpawner : MonoBehaviour
                 continue;
             }
 
-            Vector3 beakerPosition = new Vector3(
-                spawnPosition.x * gridManager.tileSize,
-                beakerHeightOffset, // Place beaker above the floor
-                spawnPosition.y * gridManager.tileSize
-            );
+            // Use grid manager's GetWorldPosition to ensure correct rotation
+            Vector3 beakerPosition = gridManager.GetWorldPosition(spawnPosition);
+            beakerPosition.y = beakerHeightOffset; // Adjust height above the floor
 
             // Instantiate the beaker
             GameObject spawnedBeaker = Instantiate(beakerPrefab, beakerPosition, Quaternion.identity, gridManager.transform);

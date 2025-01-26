@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(GridManager))]
 public class PlayerSpawner : MonoBehaviour
@@ -10,6 +11,9 @@ public class PlayerSpawner : MonoBehaviour
     public Vector3 playerScale = new Vector3(1f, 1f, 1f); // Scale for the player
     public float playerHeightOffset = 0.5f; // Height offset for the player spawn above the floor
 
+    [Header("Spawn Area Settings")]
+    public List<Vector2Int> spawnAreas; // Manually defined spawn areas
+
     private void Awake()
     {
         gridManager = GetComponent<GridManager>();
@@ -17,15 +21,17 @@ public class PlayerSpawner : MonoBehaviour
 
     private void Start()
     {
-        SpawnPlayer();
+        SpawnPlayerInSpecificAreas();
     }
 
-    private void SpawnPlayer()
+    private void SpawnPlayerInSpecificAreas()
     {
-        // Iterate through row 0 to find a valid tile
-        for (int x = 0; x < gridManager.gridWidth; x++)
+        // Log all wall positions for debugging
+        Debug.Log("Wall positions: " + string.Join(", ", gridManager.wallPositions));
+
+        // Iterate through manually specified spawn areas
+        foreach (Vector2Int tilePosition in spawnAreas)
         {
-            Vector2Int tilePosition = new Vector2Int(x, 0); // Only row 0 tiles
             Debug.Log($"Checking position: {tilePosition}");
 
             // Check if the tile does not have a wall
@@ -33,12 +39,9 @@ public class PlayerSpawner : MonoBehaviour
             {
                 Debug.Log($"Valid spawn position found: {tilePosition}");
 
-                // Calculate the world position for the player
-                Vector3 playerPosition = new Vector3(
-                    tilePosition.x * gridManager.tileSize,
-                    playerHeightOffset,
-                    tilePosition.y * gridManager.tileSize
-                );
+                // Calculate the world position for the player using grid rotation
+                Vector3 playerPosition = gridManager.GetWorldPosition(tilePosition);
+                playerPosition.y = playerHeightOffset; // Adjust height above the floor
 
                 // Instantiate the player
                 GameObject player = Instantiate(playerPrefab, playerPosition, Quaternion.identity, gridManager.transform);
@@ -46,10 +49,11 @@ public class PlayerSpawner : MonoBehaviour
                 // Fix the player's scale
                 player.transform.localScale = playerScale;
 
+                Debug.Log($"Player spawned at position: {tilePosition}");
                 return; // Exit once a valid position is found
             }
         }
 
-        Debug.LogWarning("No valid spawn position for the player found on row 0!");
+        Debug.LogWarning("No valid spawn position for the player found in specified areas!");
     }
 }

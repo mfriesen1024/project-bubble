@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour
     public int maxHealth = 100;
     private int currentHealth;
 
+    [SerializeField]
+    private float raycastDistance = 0.25f; // Raycast distance adjustable in Inspector
+
     void Start()
     {
         if (cameraTransform != null)
@@ -25,25 +28,25 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W) && !isMoving)
+        if (Input.GetKeyDown(KeyCode.W) && !isMoving && CanMove(Vector3.forward))
         {
             StartCoroutine(MovePlayer(Vector3.forward));
             transform.rotation = Quaternion.LookRotation(Vector3.forward);
         }
 
-        if (Input.GetKeyDown(KeyCode.A) && !isMoving)
+        if (Input.GetKeyDown(KeyCode.A) && !isMoving && CanMove(Vector3.left))
         {
             StartCoroutine(MovePlayer(Vector3.left));
             transform.rotation = Quaternion.LookRotation(Vector3.left);
         }
 
-        if (Input.GetKeyDown(KeyCode.S) && !isMoving)
+        if (Input.GetKeyDown(KeyCode.S) && !isMoving && CanMove(Vector3.back))
         {
             StartCoroutine(MovePlayer(Vector3.back));
             transform.rotation = Quaternion.LookRotation(Vector3.back);
         }
 
-        if (Input.GetKeyDown(KeyCode.D) && !isMoving)
+        if (Input.GetKeyDown(KeyCode.D) && !isMoving && CanMove(Vector3.right))
         {
             StartCoroutine(MovePlayer(Vector3.right));
             transform.rotation = Quaternion.LookRotation(Vector3.right);
@@ -53,6 +56,21 @@ public class PlayerController : MonoBehaviour
         {
             cameraTransform.position = transform.position + cameraOffset;
         }
+    }
+
+    private bool CanMove(Vector3 direction)
+    {
+        Ray ray = new Ray(transform.position, direction);
+        RaycastHit hit;
+
+        // Perform raycast
+        if (Physics.Raycast(ray, out hit, raycastDistance))
+        {
+            Debug.Log("Blocked by: " + hit.collider.name);
+            return false; // Blocked by an object within raycastDistance
+        }
+
+        return true; // No obstacles, movement allowed
     }
 
     private IEnumerator MovePlayer(Vector3 direction)
